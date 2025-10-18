@@ -3,34 +3,35 @@ package com.example.nutrilive
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.nutrilive.ui.theme.NutriliveTheme
-import kotlinx.coroutines.delay //  agregado para SplashScreen
-import androidx.navigation.NavController
-
+import kotlinx.coroutines.delay
 
 
 class MainActivity : ComponentActivity() {
@@ -72,9 +73,19 @@ fun AppNavigation(navController: NavHostController) {
         composable("name") {
             NameScreen(onContinue = { name ->
                 // Aquí podrías guardar el nombre o ir al siguiente paso
-                navController.popBackStack() // temporal, solo para probar
+                navController.navigate("gender") // temporal, solo para probar
             })
         }
+        composable("gender") {
+            GenderScreen(
+                onContinue = { gender ->
+                    // Ir al siguiente paso
+                    navController.navigate("nextScreen")
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
 
     }
 }
@@ -329,6 +340,125 @@ fun NameScreen(onContinue: (String) -> Unit) {
         }
     }
 }
+@Composable
+fun GenderScreen(
+    onContinue: (String) -> Unit,
+    onBack: () -> Unit
+) {
+    var selectedGender by remember { mutableStateOf<String?>(null) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 24.dp, vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+
+        Column {
+            // Botón de retroceso
+            IconButton(onClick = onBack) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = Color.Black)
+            }
+
+            // Barra de progreso
+            LinearProgressIndicator(
+                progress = { 2f / 7f },
+                color = Color(0xFF6CE5E8),
+                trackColor = Color.LightGray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+                    .padding(bottom = 8.dp)
+            )
+
+            // Texto de paso
+            Text(
+                text = "2/7",
+                color = Color.Gray,
+                modifier = Modifier.align(Alignment.End)
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            // Título
+            Text(
+                text = "¿Cuál es tu género?",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(60.dp))
+
+            // Opciones de género
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                GenderOption(
+                    label = "Masculino",
+                    icon = Icons.Default.Male,
+                    isSelected = selectedGender == "Masculino",
+                    onClick = { selectedGender = "Masculino" }
+                )
+                GenderOption(
+                    label = "Femenino",
+                    icon = Icons.Default.Female,
+                    isSelected = selectedGender == "Femenino",
+                    onClick = { selectedGender = "Femenino" }
+                )
+            }
+        }
+
+        // Botón inferior
+        // Animación suave de color según selección
+        val buttonColor by animateColorAsState(
+            targetValue = if (selectedGender != null) Color(0xFF47B8C9) else Color.LightGray,
+            animationSpec = tween(durationMillis = 500)
+        )
+
+        Button(
+            onClick = { selectedGender?.let { onContinue(it) } },
+            enabled = selectedGender != null,
+            colors = ButtonDefaults.buttonColors(containerColor = buttonColor),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(50)
+        ) {
+            Text("Continuar", color = Color.White)
+        }
+
+    }
+}
+
+@Composable
+fun GenderOption(label: String, icon: ImageVector, isSelected: Boolean, onClick: () -> Unit) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(
+            modifier = Modifier
+                .size(80.dp)
+                .clip(CircleShape)
+                .background(if (isSelected) Color(0xFF6CE5E8) else Color.Transparent)
+                .border(
+                    width = 2.dp,
+                    color = if (isSelected) Color.Transparent else Color.Black,
+                    shape = CircleShape
+                )
+                .clickable { onClick() },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(icon, contentDescription = label, tint = Color.Black, modifier = Modifier.size(32.dp))
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(label, color = Color.Black, fontSize = 16.sp)
+    }
+}
+
 
 
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true, showSystemUi = true)

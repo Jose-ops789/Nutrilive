@@ -80,11 +80,18 @@ fun AppNavigation(navController: NavHostController) {
             GenderScreen(
                 onContinue = { gender ->
                     // Ir al siguiente paso
-                    navController.navigate("nextScreen")
+                    navController.navigate("birthday")
                 },
                 onBack = { navController.popBackStack() }
             )
         }
+        composable("birthday") {
+            BirthdayScreen(onContinue = { day, month, year ->
+                // Aquí luego navegaremos al siguiente paso
+                navController.popBackStack() // Temporal para probar
+            })
+        }
+
 
 
     }
@@ -458,6 +465,95 @@ fun GenderOption(label: String, icon: ImageVector, isSelected: Boolean, onClick:
         Text(label, color = Color.Black, fontSize = 16.sp)
     }
 }
+@Composable
+fun BirthdayScreen(onContinue: (String, String, String) -> Unit) {
+    var day by remember { mutableStateOf("") }
+    var month by remember { mutableStateOf("") }
+    var year by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 24.dp, vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            // Progreso
+            LinearProgressIndicator(
+                progress = {3f / 7f},
+                color = Color(0xFF47B8C9),
+                trackColor = Color.LightGray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+            )
+
+            Text(
+                text = "3/7",
+                color = Color.Gray,
+                modifier = Modifier.align(Alignment.End).padding(top = 4.dp)
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Text(
+                text = "¿Cuándo es tu cumpleaños?",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(50.dp))
+
+            // Campos Día, Mes, Año
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                BirthdayField(label = "Día", value = day, onValueChange = { day = it })
+                BirthdayField(label = "Mes", value = month, onValueChange = { month = it })
+                BirthdayField(label = "Año", value = year, onValueChange = { year = it })
+            }
+        }
+
+        // Botón Continuar
+        Button(
+            onClick = {
+                if (day.isNotBlank() && month.isNotBlank() && year.isNotBlank()) {
+                    onContinue(day, month, year)
+                }
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF47B8C9)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(50)
+        ) {
+            Text("Continuar", color = Color.White)
+        }
+    }
+}
+// fecha de cumpleaños
+
+@Composable
+fun BirthdayField(label: String, value: String, onValueChange: (String) -> Unit) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(label, color = Color.Gray)
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            singleLine = true,
+            modifier = Modifier
+                .width(90.dp)
+                .height(56.dp),
+            shape = RoundedCornerShape(8.dp)
+        )
+    }
+}
+
 
 
 

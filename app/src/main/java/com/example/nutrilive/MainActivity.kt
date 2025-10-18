@@ -9,6 +9,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -88,9 +90,19 @@ fun AppNavigation(navController: NavHostController) {
         composable("birthday") {
             BirthdayScreen(onContinue = { day, month, year ->
                 // Aquí luego navegaremos al siguiente paso
-                navController.popBackStack() // Temporal para probar
+                navController.navigate("height") // Temporal para probar
             })
         }
+        composable("height") {
+            HeightScreen(
+                onContinue = { heightCm ->
+                    // Aquí iría el siguiente paso (p.ej. peso)
+                    navController.popBackStack() // temporal para probar
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
 
 
 
@@ -553,6 +565,99 @@ fun BirthdayField(label: String, value: String, onValueChange: (String) -> Unit)
         )
     }
 }
+@Composable
+fun HeightScreen(
+    onContinue: (Int) -> Unit,
+    onBack: () -> Unit
+) {
+    var heightText by remember { mutableStateOf("") }
+    val height = heightText.toIntOrNull()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 24.dp, vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column {
+            // Back
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Volver",
+                    tint = Color.Black
+                )
+            }
+
+            // Progreso 4/7
+            LinearProgressIndicator(
+                progress = { 4f / 7f },
+                color = Color(0xFF47B8C9),
+                trackColor = Color.LightGray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+            )
+            Text(
+                text = "4/7",
+                color = Color.Gray,
+                modifier = Modifier.align(Alignment.End).padding(top = 4.dp)
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Título
+            Text(
+                text = "¿Cuál es tu estatura?",
+                // si prefieres: "¿Cuál es tu altura?"
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Etiqueta
+            Text("Estatura (en cm)", color = Color.Gray)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Campo numérico
+            OutlinedTextField(
+                value = heightText,
+                onValueChange = { text ->
+                    if (text.all { it.isDigit() }) heightText = text
+                },
+                singleLine = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                shape = RoundedCornerShape(8.dp),
+                placeholder = { Text("Ej: 170") }
+            )
+        }
+
+        // Botón Continuar
+        val isValid = (height != null && height in 50..250)
+        Button(
+            onClick = { height?.let { onContinue(it) } },
+            enabled = isValid,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (isValid) Color(0xFF47B8C9) else Color.LightGray
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(50)
+        ) {
+            Text("Continuar", color = Color.White)
+        }
+    }
+}
+
 
 
 

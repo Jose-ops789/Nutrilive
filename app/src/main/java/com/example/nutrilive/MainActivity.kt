@@ -105,12 +105,22 @@ fun AppNavigation(navController: NavHostController) {
         composable("weight") {
             WeightScreen(
                 onContinue = { weightKg ->
-                    // Próximamente irá al paso 6 (por ahora temporal)
+
+                    navController.navigate("ideal_weight")
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable("ideal_weight") {
+            IdealWeightScreen(
+                onContinue = { idealWeightKg ->
+                    // Por ahora, que vaya temporalmente atrás (después haremos la final)
                     navController.popBackStack()
                 },
                 onBack = { navController.popBackStack() }
             )
         }
+
 
 
 
@@ -747,6 +757,99 @@ fun WeightScreen(
         val isValid = (weight != null && weight in 30..300)
         Button(
             onClick = { weight?.let { onContinue(it) } },
+            enabled = isValid,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (isValid) Color(0xFF47B8C9) else Color.LightGray
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(50)
+        ) {
+            Text("Continuar", color = Color.White)
+        }
+    }
+}
+@Composable
+fun IdealWeightScreen(
+    onContinue: (Int) -> Unit,
+    onBack: () -> Unit
+) {
+    var idealWeightText by remember { mutableStateOf("") }
+    val idealWeight = idealWeightText.toIntOrNull()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 24.dp, vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column {
+            // Botón volver
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Volver",
+                    tint = Color.Black
+                )
+            }
+
+            // Barra de progreso 6/7
+            LinearProgressIndicator(
+                progress = { 6f / 7f },
+                color = Color(0xFF47B8C9),
+                trackColor = Color.LightGray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+            )
+            Text(
+                text = "6/7",
+                color = Color.Gray,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(top = 4.dp)
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Título
+            Text(
+                text = "¿Cuál es tu peso ideal?",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Etiqueta
+            Text("Peso (en kg)", color = Color.Gray)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Campo numérico
+            OutlinedTextField(
+                value = idealWeightText,
+                onValueChange = { text ->
+                    if (text.all { it.isDigit() }) idealWeightText = text
+                },
+                singleLine = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                shape = RoundedCornerShape(8.dp),
+                placeholder = { Text("Ej: 65") }
+            )
+        }
+
+        // Botón continuar
+        val isValid = (idealWeight != null && idealWeight in 30..300)
+        Button(
+            onClick = { idealWeight?.let { onContinue(it) } },
             enabled = isValid,
             colors = ButtonDefaults.buttonColors(
                 containerColor = if (isValid) Color(0xFF47B8C9) else Color.LightGray

@@ -28,7 +28,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.nutrilive.ui.theme.NutriliveTheme
-import kotlinx.coroutines.delay // 👈 agregado para SplashScreen
+import kotlinx.coroutines.delay //  agregado para SplashScreen
+import androidx.navigation.NavController
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,8 +66,16 @@ fun AppNavigation(navController: NavHostController) {
         }
 
         composable("signup") {
-            SignUpScreen(onBack = { navController.popBackStack() })
+            SignUpScreen(navController, onBack = { navController.popBackStack() })
         }
+
+        composable("name") {
+            NameScreen(onContinue = { name ->
+                // Aquí podrías guardar el nombre o ir al siguiente paso
+                navController.popBackStack() // temporal, solo para probar
+            })
+        }
+
     }
 }
 
@@ -157,7 +168,8 @@ fun WelcomeScreen(onSignUpClick: () -> Unit) {
 }
 
 @Composable
-fun SignUpScreen(onBack: () -> Unit) {
+
+fun SignUpScreen(navController: NavController, onBack: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isChecked by remember { mutableStateOf(false) }
@@ -230,7 +242,7 @@ fun SignUpScreen(onBack: () -> Unit) {
 
         // Boton principal
         Button(
-            onClick = { /* TODO: lógica de registro */ },
+            onClick = { navController.navigate("name") },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6CE5E8)),
             modifier = Modifier
                 .fillMaxWidth()
@@ -239,8 +251,85 @@ fun SignUpScreen(onBack: () -> Unit) {
         ) {
             Text("Inscribirse", color = Color.White, fontWeight = FontWeight.Bold)
         }
+
     }
 }
+//Primera pantalla para como te llamas
+
+@Composable
+fun NameScreen(onContinue: (String) -> Unit) {
+    var name by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 24.dp, vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            // Barra de progreso
+            LinearProgressIndicator(
+                progress = 1f / 7f,
+                color = Color(0xFF6CE5E8),
+                trackColor = Color.LightGray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+                    .padding(bottom = 8.dp)
+            )
+
+            // Texto de paso
+            Text(
+                text = "1/7",
+                color = Color.Gray,
+                modifier = Modifier.align(Alignment.End)
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            // Título
+            Text(
+                text = "¿Cómo te llamas?",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(60.dp))
+
+            // Campo de texto
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                singleLine = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                textStyle = LocalTextStyle.current.copy(
+                    fontSize = 20.sp,
+                    color = Color.Black
+                ),
+                placeholder = { Text("Tu nombre") },
+                shape = RoundedCornerShape(8.dp)
+            )
+        }
+
+        // Botón inferior
+        Button(
+            onClick = { if (name.isNotBlank()) onContinue(name) },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF47B8C9)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(50)
+        ) {
+            Text("Continuar", color = Color.White)
+        }
+    }
+}
+
 
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -253,7 +342,9 @@ fun PreviewWelcomeScreen() {
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewSignUpScreen() {
+    val fakeNavController = rememberNavController() // se usa solo para preview
     NutriliveTheme {
-        SignUpScreen(onBack = {})
+        SignUpScreen(navController = fakeNavController, onBack = {})
     }
 }
+

@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,10 +37,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
+
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalTextStyle
+
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -103,8 +106,11 @@ fun AppNavigation(navController: NavHostController) {
         }
 
         composable("welcome") {
-            WelcomeScreen(onSignUpClick = { navController.navigate("signup") })
+            WelcomeScreen(onSignUpClick = { navController.navigate("signup") },
+            onLoginClick = { navController.navigate("login") }
+            )
         }
+
 
         composable("signup") {
             SignUpScreen(navController, onBack = { navController.popBackStack() })
@@ -162,11 +168,23 @@ fun AppNavigation(navController: NavHostController) {
             CaloriePlanScreen(
                 onStartPlan = {
                     // Aquí podrías ir a tu pantalla principal (por ahora vuelve atrás)
-                    navController.popBackStack()
+                    navController.navigate("login")
                 },
                 onBack = { navController.popBackStack() }
             )
         }
+        composable("login") {
+            LoginScreen(
+                onBack = { navController.popBackStack() },
+                onSignUpClick = { navController.navigate("signup") },
+                onLoginSuccess = {
+                    navController.navigate("splash") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                }
+            )
+        }
+
 
     }
 }
@@ -215,7 +233,10 @@ fun SplashScreen(onTimeout: () -> Unit) {
 }
 
 @Composable
-fun WelcomeScreen(onSignUpClick: () -> Unit) {
+fun WelcomeScreen(
+    onSignUpClick: () -> Unit,
+    onLoginClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -232,29 +253,47 @@ fun WelcomeScreen(onSignUpClick: () -> Unit) {
         )
 
         Spacer(modifier = Modifier.height(20.dp))
-        Text("¡Comencemos!", fontSize = 26.sp, fontWeight = FontWeight.Bold)
-        Text("Vamos a sumergirnos en NutriLife", color = Color.Black)
+
+        // Título principal
+        Text(
+            text = "¡Comencemos!",
+            fontSize = 26.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
+        )
+
+        Text(
+            text = "Vamos a sumergirnos en NutriLife",
+            color = Color.Black,
+            fontSize = 16.sp
+        )
 
         Spacer(modifier = Modifier.height(40.dp))
 
         // Botón Inscribirse
         Button(
-            onClick = { onSignUpClick() },
+            onClick = onSignUpClick,
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .height(50.dp)
         ) {
-            Text("Inscribirse", color = Color.Black)
+            Text("Inscribirse", color = Color.Black, fontWeight = FontWeight.Medium)
         }
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Boton niciar sesion
+        // Botón Iniciar sesión
         Button(
-            onClick = { /* Aquí podrías abrir otra pantalla */ },
+            onClick = onLoginClick,
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-            shape = RoundedCornerShape(20.dp)
+            shape = RoundedCornerShape(20.dp),
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .height(50.dp)
         ) {
-            Text("Iniciar sesión", color = Color.Black)
+            Text("Iniciar sesión", color = Color.Black, fontWeight = FontWeight.Medium)
         }
     }
 }
@@ -1034,18 +1073,146 @@ fun LegendItem(color: Color, label: String) {
 }
 
 
-
-
-
-
-
-@androidx.compose.ui.tooling.preview.Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PreviewWelcomeScreen() {
-    NutriliveTheme {
-        WelcomeScreen(onSignUpClick = {})
+fun LoginScreen(
+    onBack: () -> Unit,
+    onSignUpClick: () -> Unit,
+    onLoginSuccess: () -> Unit
+) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var rememberMe by remember { mutableStateOf(false) }
+    var showPassword by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 24.dp, vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(horizontalAlignment = Alignment.Start) {
+
+            // Botón volver
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Volver",
+                    tint = Color.Black
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Título
+            Text(
+                text = "¡Bienvenido de nuevo! 👋",
+                fontSize = 26.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+            Text(
+                text = "Inicia sesión para continuar tu viaje hacia una vida más saludable.",
+                fontSize = 14.sp,
+                color = Color.Gray
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Email
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Email") },
+                leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Email") },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Contraseña
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Contraseña") },
+                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Contraseña") },
+                trailingIcon = {
+                    val image = if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility
+                    IconButton(onClick = { showPassword = !showPassword }) {
+                        Icon(image, contentDescription = "Mostrar/ocultar contraseña")
+                    }
+                },
+                visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp)
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Recordar y contraseña olvidada
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(checked = rememberMe, onCheckedChange = { rememberMe = it })
+                    Text("Acuérdate de mí", color = Color.Gray)
+                }
+                TextButton(onClick = { /* acción recuperar contraseña */ }) {
+                    Text("¿Has olvidado tu contraseña?", color = Color(0xFF47B8C9))
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Registrarse
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("¿No tienes una cuenta?", color = Color.Gray)
+                Spacer(modifier = Modifier.width(4.dp))
+                TextButton(onClick = onSignUpClick) {
+                    Text("Inscribirse", color = Color(0xFF47B8C9))
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+
+
+        }
+
+        // Botón principal
+        Button(
+            onClick = {
+                // Validación simple de ejemplo
+                if (email.isNotEmpty() && password.isNotEmpty()) {
+                    onLoginSuccess()
+                }
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF47B8C9)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(50)
+        ) {
+            Text("Iniciar sesión", color = Color.White, fontWeight = FontWeight.Bold)
+        }
     }
 }
+
+
+
+
+
+
+
+
+
 
 @androidx.compose.ui.tooling.preview.Preview(showBackground = true, showSystemUi = true)
 @Composable

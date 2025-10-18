@@ -271,7 +271,7 @@ fun NameScreen(onContinue: (String) -> Unit) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             // Barra de progreso
             LinearProgressIndicator(
-                progress = 1f / 7f,
+                progress = {1f / 7f},
                 color = Color(0xFF6CE5E8),
                 trackColor = Color.LightGray,
                 modifier = Modifier

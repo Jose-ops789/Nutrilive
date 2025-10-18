@@ -97,11 +97,21 @@ fun AppNavigation(navController: NavHostController) {
             HeightScreen(
                 onContinue = { heightCm ->
                     // Aquí iría el siguiente paso (p.ej. peso)
-                    navController.popBackStack() // temporal para probar
+                    navController.navigate("weight") // temporal para probar
                 },
                 onBack = { navController.popBackStack() }
             )
         }
+        composable("weight") {
+            WeightScreen(
+                onContinue = { weightKg ->
+                    // Próximamente irá al paso 6 (por ahora temporal)
+                    navController.popBackStack()
+                },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
 
 
 
@@ -657,6 +667,100 @@ fun HeightScreen(
         }
     }
 }
+@Composable
+fun WeightScreen(
+    onContinue: (Int) -> Unit,
+    onBack: () -> Unit
+) {
+    var weightText by remember { mutableStateOf("") }
+    val weight = weightText.toIntOrNull()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(horizontal = 24.dp, vertical = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column {
+            // Botón volver
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Volver",
+                    tint = Color.Black
+                )
+            }
+
+            // Barra de progreso 5/7
+            LinearProgressIndicator(
+                progress = { 5f / 7f },
+                color = Color(0xFF47B8C9),
+                trackColor = Color.LightGray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+            )
+            Text(
+                text = "5/7",
+                color = Color.Gray,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(top = 4.dp)
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Título
+            Text(
+                text = "¿Cuál es tu peso actual?",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Black
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Etiqueta
+            Text("Peso (en kg)", color = Color.Gray)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Campo numérico
+            OutlinedTextField(
+                value = weightText,
+                onValueChange = { text ->
+                    if (text.all { it.isDigit() }) weightText = text
+                },
+                singleLine = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                shape = RoundedCornerShape(8.dp),
+                placeholder = { Text("Ej: 70") }
+            )
+        }
+
+        // Botón continuar
+        val isValid = (weight != null && weight in 30..300)
+        Button(
+            onClick = { weight?.let { onContinue(it) } },
+            enabled = isValid,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (isValid) Color(0xFF47B8C9) else Color.LightGray
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            shape = RoundedCornerShape(50)
+        ) {
+            Text("Continuar", color = Color.White)
+        }
+    }
+}
+
 
 
 

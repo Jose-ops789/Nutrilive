@@ -88,6 +88,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.nutrilive.ui.theme.MealSelectionScreen
 import com.example.nutrilive.ui.theme.NutriliveTheme
 import kotlinx.coroutines.delay
 
@@ -199,9 +200,26 @@ fun AppNavigation(navController: NavHostController) {
                 }
             )
         }
-        composable("home") {
-            HomeScreen(onAccountClick = { /* abrir perfil o notificaciones */ })
+
+        composable("meal/{type}") { backStackEntry ->
+            val type = backStackEntry.arguments?.getString("type") ?: "desayuno"
+            MealSelectionScreen(
+                mealType = type,
+                navController = navController
+            )
         }
+        composable("home") {
+            HomeScreen(
+                navController = navController,
+                onAccountClick = { /* abrir perfil o notificaciones */ }
+            )
+        }
+        composable("meal/desayuno") { MealSelectionScreen(mealType = "Desayuno") }
+        composable("meal/almuerzo") { MealSelectionScreen(mealType = "Almuerzo") }
+        composable("meal/cena")      { MealSelectionScreen(mealType = "Cena") }
+        composable("meal/snack")     { MealSelectionScreen(mealType = "Aperitivos") }
+
+
 
 
 
@@ -1226,7 +1244,10 @@ fun LoginScreen(
 
 
 @Composable
-fun HomeScreen(onAccountClick: () -> Unit = {}) {
+fun HomeScreen(
+    navController: NavController,
+    onAccountClick: () -> Unit = {}
+) {
     Scaffold(
         bottomBar = { BottomNavigationBar() }
     ) { innerPadding ->
@@ -1338,11 +1359,19 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Secciones de comida con imágenes
-            FoodSection("Desayuno", R.drawable.breakfast, 768)
-            FoodSection("Almuerzo", R.drawable.lunch, 768)
-            FoodSection("Cena", R.drawable.dinner, 768)
-            FoodSection("Aperitivos", R.drawable.snack, 256)
+            // Secciones de comida con navegación
+            FoodSection("Desayuno", R.drawable.breakfast, 768) {
+                navController.navigate("meal/desayuno")
+            }
+            FoodSection("Almuerzo", R.drawable.lunch, 768) {
+                navController.navigate("meal/almuerzo")
+            }
+            FoodSection("Cena", R.drawable.dinner, 768) {
+                navController.navigate("meal/cena")
+            }
+            FoodSection("Aperitivos", R.drawable.snack, 256) {
+                navController.navigate("meal/snack")
+            }
 
             Spacer(modifier = Modifier.height(80.dp))
         }
@@ -1350,38 +1379,17 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
 }
 
 @Composable
-fun NutrientCircle(title: String, amount: String, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(
-            modifier = Modifier
-                .size(70.dp)
-                .border(4.dp, color, CircleShape)
-                .padding(8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("0", fontWeight = FontWeight.Bold)
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(title, color = Color.Gray, fontWeight = FontWeight.Medium)
-        Text(amount, fontSize = 12.sp, color = Color.LightGray)
-    }
-}
-
-@Composable
-fun ActivityCard(icon: String, label: String, kcal: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(icon, fontSize = 26.sp)
-        Text(label, color = Color.Gray)
-        Text(kcal, fontWeight = FontWeight.Bold)
-    }
-}
-
-@Composable
-fun FoodSection(title: String, @DrawableRes imageRes: Int, kcal: Int) {
+fun FoodSection(
+    title: String,
+    @DrawableRes imageRes: Int,
+    kcal: Int,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
@@ -1412,6 +1420,36 @@ fun FoodSection(title: String, @DrawableRes imageRes: Int, kcal: Int) {
         }
     }
 }
+
+
+@Composable
+fun NutrientCircle(title: String, amount: String, color: Color) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(
+            modifier = Modifier
+                .size(70.dp)
+                .border(4.dp, color, CircleShape)
+                .padding(8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("0", fontWeight = FontWeight.Bold)
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(title, color = Color.Gray, fontWeight = FontWeight.Medium)
+        Text(amount, fontSize = 12.sp, color = Color.LightGray)
+    }
+}
+
+@Composable
+fun ActivityCard(icon: String, label: String, kcal: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(icon, fontSize = 26.sp)
+        Text(label, color = Color.Gray)
+        Text(kcal, fontWeight = FontWeight.Bold)
+    }
+}
+
+
 
 @Composable
 fun BottomNavigationBar() {

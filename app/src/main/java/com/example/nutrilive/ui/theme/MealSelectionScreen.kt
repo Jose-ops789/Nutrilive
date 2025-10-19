@@ -1,6 +1,7 @@
 package com.example.nutrilive.ui.theme
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +17,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -39,12 +42,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+
 data class FoodItem(
     val name: String,
     val calories: Int,
     val grams: Int
 )
-
+@Suppress("UNUSED_PARAMETER")
 // Función principal
 @Composable
 fun MealSelectionScreen(
@@ -55,6 +59,9 @@ fun MealSelectionScreen(
     var searchQuery by remember { mutableStateOf("") }
     var selectedTab by remember { mutableStateOf("Reciente") }
 
+    // 🟢 Lista de seleccionados
+    var selectedFoods by remember { mutableStateOf(listOf<FoodItem>()) }
+
     val foods = sampleFoods(mealType)
         .filter { it.name.contains(searchQuery, ignoreCase = true) }
 
@@ -64,7 +71,7 @@ fun MealSelectionScreen(
             .background(Color.White)
             .padding(16.dp)
     ) {
-        // Encabezado
+        // 🔹 Encabezado
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -83,7 +90,7 @@ fun MealSelectionScreen(
             }
         }
 
-        // Buscador
+        // 🔹 Buscador
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
@@ -95,7 +102,7 @@ fun MealSelectionScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Tabs
+        // 🔹 Tabs
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -114,25 +121,63 @@ fun MealSelectionScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // Lista de alimentos
+        // 🔹 Lista de alimentos
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.weight(1f)
         ) {
             items(foods) { food ->
-                FoodItemCard(food) {
-                    onAddFood(food)
+                val isSelected = selectedFoods.contains(food)
+
+                FoodItemCard(
+                    food = food,
+                    isSelected = isSelected,
+                    onClick = {
+                        selectedFoods = if (isSelected) {
+                            selectedFoods - food
+                        } else {
+                            selectedFoods + food
+                        }
+                    }
+                )
+            }
+        }
+
+        // 🔹 Barra inferior cuando hay seleccionados
+        if (selectedFoods.isNotEmpty()) {
+            val totalKcal = selectedFoods.sumOf { it.calories }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(vertical = 12.dp, horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("kcal $totalKcal", fontWeight = FontWeight.Bold)
+
+                Button(
+                    onClick = {
+                        // Más adelante conectaremos esto a la pantalla de detalle
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5CD6C0)),
+                    shape = RoundedCornerShape(20.dp)
+                ) {
+                    Text("Ver (${selectedFoods.size})", color = Color.White)
                 }
             }
         }
     }
 }
 
+// 🔹 Modificamos FoodItemCard para mostrar check o botón "+"
 @Composable
-fun FoodItemCard(food: FoodItem, onAddClick: () -> Unit) {
+fun FoodItemCard(food: FoodItem, isSelected: Boolean, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9))
     ) {
@@ -161,17 +206,26 @@ fun FoodItemCard(food: FoodItem, onAddClick: () -> Unit) {
                 )
             }
 
-            IconButton(
-                onClick = onAddClick,
-                modifier = Modifier
-                    .size(32.dp)
-                    .background(Color(0xFF5CD6C0), CircleShape)
-            ) {
+            if (isSelected) {
                 Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Agregar",
-                    tint = Color.White
+                    imageVector = Icons.Default.Check,
+                    contentDescription = "Seleccionado",
+                    tint = Color(0xFF5CD6C0),
+                    modifier = Modifier.size(28.dp)
                 )
+            } else {
+                IconButton(
+                    onClick = onClick,
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(Color(0xFF5CD6C0), CircleShape)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Agregar",
+                        tint = Color.White
+                    )
+                }
             }
         }
     }

@@ -91,6 +91,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.nutrilive.ui.theme.MealSelectionScreen
 import com.example.nutrilive.ui.theme.NutriliveTheme
 import kotlinx.coroutines.delay
+import com.example.nutrilive.ui.theme.FoodItem
+
 
 
 class MainActivity : ComponentActivity() {
@@ -109,6 +111,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
+    // Estado global para los alimentos añadidos
+    val addedFoods = remember { mutableStateOf<List<FoodItem>>(emptyList()) }
+
     //  cambiamos el destino inicial a "splash"
     NavHost(navController = navController, startDestination = "splash") {
 
@@ -205,19 +210,20 @@ fun AppNavigation(navController: NavHostController) {
             val type = backStackEntry.arguments?.getString("type") ?: "desayuno"
             MealSelectionScreen(
                 mealType = type,
-                navController = navController
+                navController = navController,
+                onAddFood = { food ->
+                    // agregamos el alimento a la lista
+                    addedFoods.value = addedFoods.value + food
+                    }
             )
         }
         composable("home") {
             HomeScreen(
                 navController = navController,
-                onAccountClick = { /* abrir perfil o notificaciones */ }
+                onAccountClick = { /* abrir perfil o notificaciones */ },
+                addedFoods = addedFoods.value
             )
         }
-        composable("meal/desayuno") { MealSelectionScreen(mealType = "Desayuno") }
-        composable("meal/almuerzo") { MealSelectionScreen(mealType = "Almuerzo") }
-        composable("meal/cena")      { MealSelectionScreen(mealType = "Cena") }
-        composable("meal/snack")     { MealSelectionScreen(mealType = "Aperitivos") }
 
 
 
@@ -1246,7 +1252,8 @@ fun LoginScreen(
 @Composable
 fun HomeScreen(
     navController: NavController,
-    onAccountClick: () -> Unit = {}
+    onAccountClick: () -> Unit = {},
+    addedFoods: List<FoodItem> = emptyList()
 ) {
     Scaffold(
         bottomBar = { BottomNavigationBar() }
@@ -1316,13 +1323,15 @@ fun HomeScreen(
                     Text("kcal left", color = Color.Gray)
                     Spacer(modifier = Modifier.height(12.dp))
 
+                    val totalCalories = addedFoods.sumOf { it.calories }
+
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("Eaten", color = Color.Gray)
-                            Text("0 kcal", fontWeight = FontWeight.Bold)
+                            Text("$totalCalories kcal", fontWeight = FontWeight.Bold)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("Burned", color = Color.Gray)

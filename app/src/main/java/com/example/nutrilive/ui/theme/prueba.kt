@@ -27,6 +27,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Article
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircleOutline
@@ -40,10 +41,14 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Payments
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.QueryStats
+import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Support
 import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Button
@@ -122,6 +127,10 @@ fun AppNavigation(navController: NavHostController) {
     }
 }
 
+// ----------------------------------------------------------------
+// --- PANTALLA DE CUENTA (IMAGEN 2) ---
+// ----------------------------------------------------------------
+
 @Composable
 fun AccountScreen(onBack: () -> Unit) {
     Scaffold(
@@ -196,9 +205,72 @@ fun AccountScreen(onBack: () -> Unit) {
                 )
                 SettingsItem(
                     icon = Icons.Filled.SwapVert,
-                    label = "Cuentas",
+                    label = "Cuentas vinculadas", // Actualizado el label
                     onClick = { /* TODO: Navegar a Cuentas */ }
                 )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Sección 3: General y Soporte (Nuevas Opciones)
+            SettingsSection(title = null) {
+                SettingsItem(
+                    icon = Icons.Filled.Palette,
+                    label = "Apariencia de la aplicación",
+                    onClick = { /* TODO: Navegar a Apariencia */ }
+                )
+                SettingsItem(
+                    icon = Icons.Filled.QueryStats,
+                    label = "Datos y análisis",
+                    onClick = { /* TODO: Navegar a Datos y análisis */ }
+                )
+                SettingsItem(
+                    icon = Icons.Filled.Support,
+                    label = "Ayuda y soporte",
+                    onClick = { /* TODO: Navegar a Ayuda y soporte */ }
+                )
+                SettingsItem(
+                    icon = Icons.Filled.RateReview,
+                    label = "Califícanos",
+                    onClick = { /* TODO: Abrir tienda para calificar */ }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Sección 4: Cerrar Sesión
+            // Implementamos el item de forma diferente para el color rojo
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+            ) {
+                // Item de Cerrar Sesión
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(onClick = { /* TODO: Implementar lógica de cerrar sesión */ })
+                        .padding(vertical = 14.dp, horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Start
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                        contentDescription = "Cerrar sesión",
+                        tint = Color(0xFFD32F2F), // Rojo para la acción principal
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = "Cerrar sesión",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFFD32F2F) // Rojo para la acción principal
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -330,11 +402,18 @@ fun SettingsItem(icon: ImageVector, label: String, onClick: () -> Unit) {
                 tint = Color.Gray
             )
         }
-        if (label != "Preferencias" && label != "Cuentas") {
+        // Condición para mostrar el divisor entre items
+        if (label != "Preferencias" && label != "Cuentas vinculadas" && label != "Califícanos") {
             Divider(color = Color(0xFFF0F0F0), thickness = 1.dp, modifier = Modifier.padding(start = 56.dp))
         }
     }
 }
+
+
+// ----------------------------------------------------------------
+// --- PANTALLA HOME (IMAGEN 1) ---
+// ----------------------------------------------------------------
+
 @Composable
 fun HomeScreen(onAccountClick: () -> Unit) {
     val navController = rememberNavController() // O usa el NavController pasado por AppNavigation

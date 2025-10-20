@@ -1,17 +1,45 @@
 package com.example.nutrilive.ui.theme
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Fastfood
-import androidx.compose.material3.*
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.ProgressIndicatorDefaults
-import androidx.compose.runtime.*
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +59,7 @@ fun FoodDetailScreen() {
             .background(Color.White)
             .padding(16.dp)
     ) {
-        // 🔹 Encabezado
+        //  Encabezado
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -136,7 +164,7 @@ fun FoodNutritionScreen() {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 🔸 Encabezado superior
+        //  Encabezado superior
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -160,7 +188,7 @@ fun FoodNutritionScreen() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // 🔸 Imagen del alimento
+        //  Imagen del alimento
         Icon(
             imageVector = Icons.Default.Fastfood,
             contentDescription = "Food Image",
@@ -170,7 +198,7 @@ fun FoodNutritionScreen() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // 🔸 Nombre del alimento
+        //  Nombre del alimento
         Text(
             text = "Hamburguesa con queso",
             fontSize = 20.sp,
@@ -179,7 +207,7 @@ fun FoodNutritionScreen() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // 🔸 Círculo con calorías
+        //  Círculo con calorías
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.size(150.dp)
@@ -202,7 +230,7 @@ fun FoodNutritionScreen() {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // 🔸 Macronutrientes
+        //  Macronutrientes
         Column(
             horizontalAlignment = Alignment.Start,
             modifier = Modifier.fillMaxWidth(0.9f)
@@ -289,6 +317,219 @@ fun FoodNutritionScreen() {
         }
     }
 }
+@Composable
+fun HomeVisualScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        // Contenido principal
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(bottom = 70.dp), // espacio para la barra inferior
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Encabezado
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = "Inicio",
+                    tint = Color(0xFF5CD6C0),
+                    modifier = Modifier.size(28.dp)
+                )
+
+                Text(
+                    text = "NutriLife",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Perfil",
+                    tint = Color.Gray,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9))
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("Hoy, 22 de diciembre", color = Color.Gray, fontSize = 14.sp)
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // Círculo central
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.size(140.dp)
+                    ) {
+                        CircularProgressIndicator(
+                        progress = { 0.65f },
+                        modifier = Modifier.fillMaxSize(),
+                        color = Color(0xFF5CD6C0),
+                        strokeWidth = 10.dp,
+                        trackColor = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
+                        strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap,
+                        )
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("2190", fontWeight = FontWeight.Bold, fontSize = 28.sp)
+                            Text("kcal left", color = Color.Gray, fontSize = 14.sp)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Eaten", fontWeight = FontWeight.Bold)
+                            Text("1634 kcal", color = Color.Gray, fontSize = 13.sp)
+                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Burned", fontWeight = FontWeight.Bold)
+                            Text("265 kcal", color = Color.Gray, fontSize = 13.sp)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Carbs", color = Color(0xFFFF7043))
+                            Text("168 / 224 g", fontSize = 13.sp)
+                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Protein", color = Color(0xFF2196F3))
+                            Text("83 / 120 g", fontSize = 13.sp)
+                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Fat", color = Color(0xFFFFC107))
+                            Text("70 / 138 g", fontSize = 13.sp)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Actividad física
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Caminando", color = Color.Gray, fontSize = 13.sp)
+                            Text("100 kcal", fontWeight = FontWeight.Bold)
+                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Actividad", color = Color.Gray, fontSize = 13.sp)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text("165 kcal", fontWeight = FontWeight.Bold)
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = "Agregar",
+                                    tint = Color(0xFF5CD6C0),
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // 🔸 Lista de comidas
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                MealItem("Desayuno", "824 / 768 kcal", checked = true)
+                MealItem("Almuerzo", "810 / 768 kcal", checked = true)
+                MealItem("Cena", "303 / 768 kcal", checked = false)
+                MealItem("Aperitivos", "0 / 256 kcal", checked = false)
+            }
+        }
+
+        // 🔹 Barra inferior fija
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .background(Color.White)
+                .padding(vertical = 12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(Icons.Default.Home, contentDescription = "Inicio", tint = Color(0xFF5CD6C0))
+                Icon(Icons.Default.Person, contentDescription = "Perfil", tint = Color.Gray)
+                Icon(Icons.Default.Settings, contentDescription = "Ajustes", tint = Color.Gray)
+            }
+        }
+    }
+}
+
+//  Componente de ítem de comida
+@Composable
+fun MealItem(title: String, subtitle: String, checked: Boolean) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9))
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(title, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(subtitle, color = Color.Gray, fontSize = 13.sp)
+            }
+            if (checked) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = "Completado",
+                    tint = Color(0xFF5CD6C0)
+                )
+            } else {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Agregar",
+                    tint = Color(0xFF5CD6C0)
+                )
+            }
+        }
+    }
+}
+
+
 
 
 
@@ -303,4 +544,10 @@ fun PreviewFoodDetailScreen() {
 @Composable
 fun PreviewFoodNutritionScreen() {
     FoodNutritionScreen()
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun PreviewHomeVisualScreen() {
+    HomeVisualScreen()
 }

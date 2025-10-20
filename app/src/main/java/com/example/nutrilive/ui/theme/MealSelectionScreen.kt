@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 
+
 data class FoodItem(
     val name: String,
     val calories: Int,
@@ -139,6 +140,7 @@ fun MealSelectionScreen(
                         }
                     }
                 )
+
             }
         }
 
@@ -172,7 +174,11 @@ fun MealSelectionScreen(
 
 // 🔹 Modificamos FoodItemCard para mostrar check o botón "+"
 @Composable
-fun FoodItemCard(food: FoodItem, isSelected: Boolean, onClick: () -> Unit) {
+fun FoodItemCard(
+    food: FoodItem,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

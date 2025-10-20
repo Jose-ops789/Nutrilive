@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
-
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,7 +30,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Article
-
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Email
@@ -49,14 +47,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
-
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -88,11 +84,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.nutrilive.ui.theme.FoodDetailScreen
+import com.example.nutrilive.ui.theme.FoodItem
 import com.example.nutrilive.ui.theme.MealSelectionScreen
 import com.example.nutrilive.ui.theme.NutriliveTheme
 import kotlinx.coroutines.delay
-import com.example.nutrilive.ui.theme.FoodItem
-
 
 
 class MainActivity : ComponentActivity() {
@@ -206,17 +202,7 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
 
-        composable("meal/{type}") { backStackEntry ->
-            val type = backStackEntry.arguments?.getString("type") ?: "desayuno"
-            MealSelectionScreen(
-                mealType = type,
-                navController = navController,
-                onAddFood = { food ->
-                    // agregamos el alimento a la lista
-                    addedFoods.value = addedFoods.value + food
-                    }
-            )
-        }
+
         composable("home") {
             HomeScreen(
                 navController = navController,
@@ -224,6 +210,34 @@ fun AppNavigation(navController: NavHostController) {
                 addedFoods = addedFoods.value
             )
         }
+        composable("meal/{type}") { backStackEntry ->
+            val type = backStackEntry.arguments?.getString("type") ?: "desayuno"
+
+            MealSelectionScreen(
+                mealType = type,
+                navController = navController,
+                onAddFood = { food ->
+                    // ✅ Agregamos alimento seleccionado a la lista global
+                    addedFoods.value = addedFoods.value + food
+                }
+            )
+        }
+
+        // 🧾 Detalle de comida
+        composable("foodDetail/{name}/{calories}/{grams}") { backStackEntry ->
+            val name = backStackEntry.arguments?.getString("name") ?: ""
+            val calories = backStackEntry.arguments?.getString("calories")?.toIntOrNull() ?: 0
+            val grams = backStackEntry.arguments?.getString("grams")?.toIntOrNull() ?: 0
+
+            FoodDetailScreen(
+                navController = navController,
+                name = name,
+                calories = calories,
+                grams = grams
+            )
+        }
+
+
 
 
 

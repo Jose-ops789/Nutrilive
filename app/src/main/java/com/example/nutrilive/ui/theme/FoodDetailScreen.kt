@@ -16,10 +16,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.DirectionsRun
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Fastfood
+import androidx.compose.material.icons.filled.Fireplace
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
@@ -528,7 +530,151 @@ fun MealItem(title: String, subtitle: String, checked: Boolean) {
         }
     }
 }
+@Composable
+fun TrainerPlanScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF9F9F9))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(bottom = 70.dp) // deja espacio para la barra inferior
+        ) {
+            // 🔹 Título principal
+            Text(
+                text = "Plan de Entrenador",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
+                textAlign = TextAlign.Center
+            )
 
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // 🔹 Tarjetas de objetivos
+            TrainerPlanItem("Plan de desayuno", "500 kcal", Icons.Default.Fireplace, true)
+            TrainerPlanItem("Plan de entrenamiento", "200 kcal burned",
+                Icons.AutoMirrored.Filled.DirectionsRun, true)
+            TrainerPlanItem("Objetivo de pasos", "500 kcal", Icons.Default.Fireplace, false)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            HorizontalDivider(thickness = 1.dp, color = Color(0xFFE0E0E0))
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 🔹 Nota del entrenador
+            Text(
+                text = "Nota del entrenador",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // 🔹 Contenedor de notas
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text("• Centrar en la ingesta de proteínas.", fontWeight = FontWeight.SemiBold)
+                    Text(
+                        "Añade un huevo o tofu para obtener más proteínas.",
+                        color = Color(0xFF4CAF50),
+                        fontSize = 13.sp
+                    )
+
+                    Text("• Mantente hidratada", fontWeight = FontWeight.SemiBold)
+                    Text(
+                        "¡No olvides hidratarte después de tu entrenamiento!",
+                        color = Color(0xFF4CAF50),
+                        fontSize = 13.sp
+                    )
+
+                    Text("• Centrarse en Cardio.", fontWeight = FontWeight.SemiBold)
+                    Text(
+                        "Intenta alcanzar los 10.000 pasos hoy 💪",
+                        color = Color(0xFF4CAF50),
+                        fontSize = 13.sp
+                    )
+                }
+            }
+        }
+
+        // 🔹 Barra inferior fija
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .background(Color.White)
+                .padding(vertical = 12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(Icons.Default.Home, contentDescription = "Inicio", tint = Color.Gray)
+                Icon(Icons.Default.Fireplace, contentDescription = "Plan", tint = Color(0xFF5CD6C0))
+                Icon(Icons.Default.Settings, contentDescription = "Ajustes", tint = Color.Gray)
+                Icon(Icons.Default.Person, contentDescription = "Cuenta", tint = Color.Gray)
+            }
+        }
+    }
+}
+
+@Composable
+fun TrainerPlanItem(title: String, subtitle: String, icon: androidx.compose.ui.graphics.vector.ImageVector, checked: Boolean) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(title, fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(icon, contentDescription = null, tint = Color(0xFFFF9800), modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(subtitle, color = Color.Gray, fontSize = 13.sp)
+                }
+            }
+
+            if (checked) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = "Completado",
+                    tint = Color(0xFF5CD6C0),
+                    modifier = Modifier.size(26.dp)
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(24.dp)
+                        .background(Color(0xFFE0E0E0), RoundedCornerShape(6.dp))
+                )
+            }
+        }
+    }
+}
 
 
 
@@ -550,4 +696,9 @@ fun PreviewFoodNutritionScreen() {
 @Composable
 fun PreviewHomeVisualScreen() {
     HomeVisualScreen()
+}
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun PreviewTrainerPlanScreen() {
+    TrainerPlanScreen()
 }

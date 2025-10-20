@@ -84,7 +84,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.nutrilive.ui.theme.FoodDetailScreen
+
 import com.example.nutrilive.ui.theme.FoodItem
 import com.example.nutrilive.ui.theme.MealSelectionScreen
 import com.example.nutrilive.ui.theme.NutriliveTheme
@@ -223,18 +223,11 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
 
-        // 🧾 Detalle de comida
-        composable("foodDetail/{name}/{calories}/{grams}") { backStackEntry ->
-            val name = backStackEntry.arguments?.getString("name") ?: ""
-            val calories = backStackEntry.arguments?.getString("calories")?.toIntOrNull() ?: 0
-            val grams = backStackEntry.arguments?.getString("grams")?.toIntOrNull() ?: 0
 
-            FoodDetailScreen(
-                navController = navController,
-                name = name,
-                calories = calories,
-                grams = grams
-            )
+
+
+
+
         }
 
 
@@ -243,7 +236,7 @@ fun AppNavigation(navController: NavHostController) {
 
 
 
-    }
+
 }
 
 @Composable

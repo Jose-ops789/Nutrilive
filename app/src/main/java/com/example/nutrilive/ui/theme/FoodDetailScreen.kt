@@ -1,6 +1,7 @@
 package com.example.nutrilive.ui.theme
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,20 +17,32 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForwardIos
 import androidx.compose.material.icons.automirrored.filled.DirectionsRun
+import androidx.compose.material.icons.automirrored.filled.DirectionsWalk
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
+import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.CreditCard
+import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material.icons.filled.Fireplace
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.WaterDrop
+import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,12 +57,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
 
 @Composable
 fun FoodDetailScreen() {
@@ -675,9 +690,188 @@ fun TrainerPlanItem(title: String, subtitle: String, icon: androidx.compose.ui.g
         }
     }
 }
+@Composable
+fun AccountScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFF9F9F9))
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(bottom = 70.dp)
+        ) {
+            // 🔹 Encabezado
+            Text(
+                text = "Cuenta",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            )
 
+            Spacer(modifier = Modifier.height(8.dp))
 
+            // 🔹 Perfil de usuario (placeholder)
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .clip(CircleShape)
+                                .background(Color.LightGray)
+                                .border(1.dp, Color.Gray, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text("J", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                        }
 
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        Column {
+                            Text("Jose", fontWeight = FontWeight.SemiBold, fontSize = 16.sp)
+                            Text(
+                                "jose.ainsley@yourdomain.com",
+                                color = Color.Gray,
+                                fontSize = 13.sp
+                            )
+                        }
+                    }
+
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 🔹 Opciones principales
+            SettingsSection(
+                listOf(
+                    Pair("Contador de calorías", Icons.Default.Whatshot),
+                    Pair("Rastreador de agua", Icons.Default.WaterDrop),
+                    Pair("Contador de pasos", Icons.AutoMirrored.Filled.DirectionsWalk),
+                    Pair("Preferencias", Icons.Default.Settings)
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // 🔹 Opciones secundarias
+            SettingsSection(
+                listOf(
+                    Pair("Notificación", Icons.Default.Notifications),
+                    Pair("Métodos de pago", Icons.Default.CreditCard),
+                    Pair("Cuenta y seguridad", Icons.Default.Lock),
+                    Pair("Apariencia de la aplicación", Icons.Default.Palette),
+                    Pair("Ayuda y soporte", Icons.AutoMirrored.Filled.HelpOutline)
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // 🔹 Cerrar sesión
+            Text(
+                text = "Cerrar sesión",
+                color = Color(0xFFE53935),
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 15.sp,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+
+        // 🔹 Barra inferior fija
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomCenter)
+                .background(Color.White)
+                .padding(vertical = 12.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(Icons.Default.Home, contentDescription = "Inicio", tint = Color.Gray)
+                Icon(Icons.Default.Description, contentDescription = "Plan", tint = Color.Gray)
+                Icon(Icons.AutoMirrored.Filled.ShowChart, contentDescription = "Insights", tint = Color.Gray)
+                Icon(Icons.Default.Person, contentDescription = "Cuenta", tint = Color(0xFF5CD6C0))
+            }
+        }
+    }
+}
+
+// 🔸 Reutilizable para las secciones de configuración
+@Composable
+fun SettingsSection(items: List<Pair<String, androidx.compose.ui.graphics.vector.ImageVector>>) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White)
+    ) {
+        Column {
+            items.forEachIndexed { index, item ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = item.second,
+                            contentDescription = null,
+                            tint = Color(0xFF5CD6C0),
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(item.first, fontSize = 15.sp)
+                    }
+
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForwardIos,
+                        contentDescription = null,
+                        tint = Color.Gray,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+
+                // Separador entre elementos
+                if (index != items.lastIndex) {
+                    HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Divider() {
+    TODO("Not yet implemented")
+}
 
 
 @Preview(showBackground = true, showSystemUi = true)
@@ -701,4 +895,9 @@ fun PreviewHomeVisualScreen() {
 @Composable
 fun PreviewTrainerPlanScreen() {
     TrainerPlanScreen()
+}
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun PreviewAccountScreen() {
+    AccountScreen   ()
 }

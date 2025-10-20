@@ -25,17 +25,14 @@ import androidx.compose.material.icons.automirrored.filled.ShowChart
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material.icons.filled.Fireplace
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.filled.Whatshot
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -770,7 +767,6 @@ fun AccountScreen() {
             SettingsSection(
                 listOf(
                     Pair("Contador de calorías", Icons.Default.Whatshot),
-                    Pair("Rastreador de agua", Icons.Default.WaterDrop),
                     Pair("Contador de pasos", Icons.AutoMirrored.Filled.DirectionsWalk),
                     Pair("Preferencias", Icons.Default.Settings)
                 )
@@ -782,8 +778,6 @@ fun AccountScreen() {
             SettingsSection(
                 listOf(
                     Pair("Notificación", Icons.Default.Notifications),
-                    Pair("Métodos de pago", Icons.Default.CreditCard),
-                    Pair("Cuenta y seguridad", Icons.Default.Lock),
                     Pair("Apariencia de la aplicación", Icons.Default.Palette),
                     Pair("Ayuda y soporte", Icons.AutoMirrored.Filled.HelpOutline)
                 )

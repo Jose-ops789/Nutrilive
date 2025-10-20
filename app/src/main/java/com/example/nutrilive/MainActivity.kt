@@ -1,11 +1,13 @@
 package com.example.nutrilive
 
 import android.os.Bundle
+import android.window.SplashScreen
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,6 +32,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Article
+
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Email
@@ -47,12 +50,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
+
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -77,6 +82,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.Wallpapers
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -84,9 +92,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-
-import com.example.nutrilive.ui.theme.FoodItem
-import com.example.nutrilive.ui.theme.MealSelectionScreen
 import com.example.nutrilive.ui.theme.NutriliveTheme
 import kotlinx.coroutines.delay
 
@@ -107,9 +112,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
-    // Estado global para los alimentos añadidos
-    val addedFoods = remember { mutableStateOf<List<FoodItem>>(emptyList()) }
-
     //  cambiamos el destino inicial a "splash"
     NavHost(navController = navController, startDestination = "splash") {
 
@@ -201,42 +203,20 @@ fun AppNavigation(navController: NavHostController) {
                 }
             )
         }
-
-
         composable("home") {
-            HomeScreen(
-                navController = navController,
-                onAccountClick = { /* abrir perfil o notificaciones */ },
-                addedFoods = addedFoods.value
-            )
-        }
-        composable("meal/{type}") { backStackEntry ->
-            val type = backStackEntry.arguments?.getString("type") ?: "desayuno"
-
-            MealSelectionScreen(
-                mealType = type,
-                navController = navController,
-                onAddFood = { food ->
-                    // ✅ Agregamos alimento seleccionado a la lista global
-                    addedFoods.value = addedFoods.value + food
-                }
-            )
+            HomeScreen(onAccountClick = { /* abrir perfil o notificaciones */ })
         }
 
 
 
+    }
+}
 
-
-
-        }
-
-
-
-
-
-
-
-
+@Preview(showSystemUi = true, name = "App Navigation")
+@Composable
+fun AppNavigationPreview() {
+    val navController = rememberNavController()
+    AppNavigation(navController = navController)
 }
 
 @Composable
@@ -280,6 +260,13 @@ fun SplashScreen(onTimeout: () -> Unit) {
             )
         }
     }
+}
+
+@Preview(showSystemUi = true, name = "Splash Screen")
+@Composable
+fun SplashScreenPreview() {
+    SplashScreen(onTimeout = {
+    })
 }
 
 @Composable
@@ -346,6 +333,15 @@ fun WelcomeScreen(
             Text("Iniciar sesión", color = Color.Black, fontWeight = FontWeight.Medium)
         }
     }
+}
+
+@Preview(showBackground = true, name = "Welcome Screen Preview")
+@Composable
+fun WelcomeScreenPreview() {
+    WelcomeScreen(
+        onSignUpClick = { },
+        onLoginClick = { }
+    )
 }
 
 @Composable
@@ -437,6 +433,17 @@ fun SignUpScreen(navController: NavController, onBack: () -> Unit) {
 }
 //Primera pantalla para como te llamas
 
+@Preview(showSystemUi = true, name = "Sign Up Screen")
+@Composable
+fun SignUpScreenPreview() {
+    val navController = rememberNavController()
+    SignUpScreen(
+        navController = navController,
+        onBack = {
+        }
+    )
+}
+
 @Composable
 fun NameScreen(onContinue: (String) -> Unit) {
     var name by remember { mutableStateOf("") }
@@ -510,6 +517,17 @@ fun NameScreen(onContinue: (String) -> Unit) {
         }
     }
 }
+
+@Preview(showSystemUi = true, name = "Name Input Screen")
+@Composable
+fun NameScreenPreview() {
+    NameScreen(
+        onContinue = { name ->
+            println("Nombre capturado: $name")
+        }
+    )
+}
+
 @Composable
 fun GenderScreen(
     onContinue: (String) -> Unit,
@@ -604,6 +622,20 @@ fun GenderScreen(
     }
 }
 
+@Preview(
+    showSystemUi = true,
+    name = "Gender Selection Screen"
+)
+@Composable
+fun GenderScreenPreview() {
+    GenderScreen(
+        onContinue = { gender ->
+        },
+        onBack = {
+        }
+    )
+}
+
 @Composable
 fun GenderOption(label: String, icon: ImageVector, isSelected: Boolean, onClick: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -628,6 +660,29 @@ fun GenderOption(label: String, icon: ImageVector, isSelected: Boolean, onClick:
         Text(label, color = Color.Black, fontSize = 16.sp)
     }
 }
+
+@Preview(name = "Gender Option - Unselected", showBackground = true)
+@Composable
+fun GenderOptionUnselectedPreview() {
+    GenderOption(
+        label = "Masculino",
+        icon = Icons.Default.Male,
+        isSelected = false, // Estado inicial: NO seleccionado
+        onClick = { }
+    )
+}
+
+@Preview(name = "Gender Option - Selected", showBackground = true)
+@Composable
+fun GenderOptionSelectedPreview() {
+    GenderOption(
+        label = "Femenino",
+        icon = Icons.Default.Female,
+        isSelected = true, // Estado: SELECCIONADO
+        onClick = { }
+    )
+}
+
 @Composable
 fun BirthdayScreen(onContinue: (String, String, String) -> Unit) {
     var day by remember { mutableStateOf("") }
@@ -700,6 +755,17 @@ fun BirthdayScreen(onContinue: (String, String, String) -> Unit) {
 }
 // fecha de cumpleaños
 
+@Preview(
+    showSystemUi = true,
+    name = "Birthday Input Screen")
+@Composable
+fun BirthdayScreenPreview() {
+    BirthdayScreen(
+        onContinue = { day, month, year ->
+        }
+    )
+}
+
 @Composable
 fun BirthdayField(label: String, value: String, onValueChange: (String) -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -716,6 +782,29 @@ fun BirthdayField(label: String, value: String, onValueChange: (String) -> Unit)
         )
     }
 }
+
+@Preview(name = "Birthday Field - Empty", showBackground = true)
+@Composable
+fun BirthdayFieldEmptyPreview() {
+    // 1. Mostrar el campo vacío (estado inicial)
+    BirthdayField(
+        label = "Día",
+        value = "",
+        onValueChange = { }
+    )
+}
+
+@Preview(name = "Birthday Field - Filled", showBackground = true)
+@Composable
+fun BirthdayFieldFilledPreview() {
+    // 2. Mostrar el campo con un valor (estado de llenado)
+    BirthdayField(
+        label = "Año",
+        value = "2001",
+        onValueChange = { }
+    )
+}
+
 @Composable
 fun HeightScreen(
     onContinue: (Int) -> Unit,
@@ -808,6 +897,21 @@ fun HeightScreen(
         }
     }
 }
+
+@Preview(
+    showSystemUi = true,
+    name = "Height Screen - Empty/Invalid"
+)
+@Composable
+fun HeightScreenEmptyPreview() {
+    HeightScreen(
+        onContinue = { heightCm ->
+        },
+        onBack = {
+        }
+    )
+}
+
 @Composable
 fun WeightScreen(
     onContinue: (Int) -> Unit,
@@ -901,6 +1005,21 @@ fun WeightScreen(
         }
     }
 }
+
+@Preview(
+    showSystemUi = true,
+    name = "Weight Input Screen"
+)
+@Composable
+fun WeightScreenPreview() {
+    WeightScreen(
+        onContinue = { weightKg ->
+        },
+        onBack = {
+        }
+    )
+}
+
 @Composable
 fun IdealWeightScreen(
     onContinue: (Int) -> Unit,
@@ -994,6 +1113,21 @@ fun IdealWeightScreen(
         }
     }
 }
+
+@Preview(
+    showSystemUi = true,
+    name = "Ideal Weight Input Screen"
+)
+@Composable
+fun IdealWeightScreenPreview() {
+    IdealWeightScreen(
+        onContinue = { idealWeightKg ->
+        },
+        onBack = {
+        }
+    )
+}
+
 @Composable
 fun CaloriePlanScreen(
     onStartPlan: () -> Unit,
@@ -1109,6 +1243,20 @@ fun CaloriePlanScreen(
     }
 }
 
+@Preview(
+    showSystemUi = true,
+    name = "Calorie Plan Summary Screen"
+)
+@Composable
+fun CaloriePlanScreenPreview() {
+    CaloriePlanScreen(
+        onStartPlan = {
+        },
+        onBack = {
+        }
+    )
+}
+
 @Composable
 fun LegendItem(color: Color, label: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1120,6 +1268,15 @@ fun LegendItem(color: Color, label: String) {
         Spacer(modifier = Modifier.width(6.dp))
         Text(label, color = Color.Black)
     }
+}
+
+@Preview(name = "Legend Item - Carbs", showBackground = true)
+@Composable
+fun LegendItemCarbsPreview() {
+    LegendItem(
+        color = Color(0xFFE74C3C), // Color para Carbs
+        label = "Carbs"
+    )
 }
 
 
@@ -1255,13 +1412,25 @@ fun LoginScreen(
     }
 }
 
+@Preview(
+    showSystemUi = true,
+    name = "Login Screen"
+)
+@Composable
+fun LoginScreenPreview() {
+    LoginScreen(
+        onBack = {
+        },
+        onSignUpClick = {
+        },
+        onLoginSuccess = {
+        }
+    )
+}
+
 
 @Composable
-fun HomeScreen(
-    navController: NavController,
-    onAccountClick: () -> Unit = {},
-    addedFoods: List<FoodItem> = emptyList()
-) {
+fun HomeScreen(onAccountClick: () -> Unit = {}) {
     Scaffold(
         bottomBar = { BottomNavigationBar() }
     ) { innerPadding ->
@@ -1330,15 +1499,13 @@ fun HomeScreen(
                     Text("kcal left", color = Color.Gray)
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    val totalCalories = addedFoods.sumOf { it.calories }
-
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("Eaten", color = Color.Gray)
-                            Text("$totalCalories kcal", fontWeight = FontWeight.Bold)
+                            Text("0 kcal", fontWeight = FontWeight.Bold)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("Burned", color = Color.Gray)
@@ -1375,37 +1542,106 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Secciones de comida con navegación
-            FoodSection("Desayuno", R.drawable.breakfast, 768) {
-                navController.navigate("meal/desayuno")
-            }
-            FoodSection("Almuerzo", R.drawable.lunch, 768) {
-                navController.navigate("meal/almuerzo")
-            }
-            FoodSection("Cena", R.drawable.dinner, 768) {
-                navController.navigate("meal/cena")
-            }
-            FoodSection("Aperitivos", R.drawable.snack, 256) {
-                navController.navigate("meal/snack")
-            }
+            // Secciones de comida con imágenes
+            FoodSection("Desayuno", R.drawable.breakfast, 768)
+            FoodSection("Almuerzo", R.drawable.lunch, 768)
+            FoodSection("Cena", R.drawable.dinner, 768)
+            FoodSection("Aperitivos", R.drawable.snack, 256)
 
             Spacer(modifier = Modifier.height(80.dp))
         }
     }
 }
 
+@Preview(
+    showSystemUi = true,
+    name = "Home Screen - Full View"
+)
 @Composable
-fun FoodSection(
-    title: String,
-    @DrawableRes imageRes: Int,
-    kcal: Int,
-    onClick: () -> Unit
-) {
+fun HomeScreenPreview() {
+    HomeScreen(
+        onAccountClick = {
+        }
+    )
+}
+
+@Composable
+fun NutrientCircle(title: String, amount: String, color: Color) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(
+            modifier = Modifier
+                .size(70.dp)
+                .border(4.dp, color, CircleShape)
+                .padding(8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text("0", fontWeight = FontWeight.Bold)
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(title, color = Color.Gray, fontWeight = FontWeight.Medium)
+        Text(amount, fontSize = 12.sp, color = Color.LightGray)
+    }
+}
+
+@Preview(name = "Nutrient Circle - Carbs", showBackground = true)
+@Composable
+fun NutrientCircleCarbsPreview() {
+    // Previsualización para Carbs
+    NutrientCircle(
+        title = "Carbs",
+        amount = "0 / 224 g",
+        color = Color(0xFFE57373) // Color de ejemplo
+    )
+}
+
+@Preview(name = "Nutrient Circle - Protein", showBackground = true)
+@Composable
+fun NutrientCircleProteinPreview() {
+    // Previsualización para Protein
+    NutrientCircle(
+        title = "Protein",
+        amount = "0 / 128 g",
+        color = Color(0xFFFFB74D) // Color de ejemplo
+    )
+}
+
+@Composable
+fun ActivityCard(icon: String, label: String, kcal: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(icon, fontSize = 26.sp)
+        Text(label, color = Color.Gray)
+        Text(kcal, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Preview(name = "Activity Card - Walking", showBackground = true)
+@Composable
+fun ActivityCardWalkingPreview() {
+    // Ejemplo de previsualización para la actividad "Walking"
+    ActivityCard(
+        icon = "🚶‍♂️", // Un emoji de ejemplo
+        label = "Walking",
+        kcal = "0 kcal"
+    )
+}
+
+@Preview(name = "Activity Card - Activity", showBackground = true)
+@Composable
+fun ActivityCardActivityPreview() {
+    // Ejemplo de previsualización para la actividad genérica
+    ActivityCard(
+        icon = "💪", // Otro emoji de ejemplo
+        label = "Activity",
+        kcal = "0 kcal"
+    )
+}
+
+@Composable
+fun FoodSection(title: String, @DrawableRes imageRes: Int, kcal: Int) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .clickable { onClick() },
+            .padding(vertical = 8.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
@@ -1437,35 +1673,25 @@ fun FoodSection(
     }
 }
 
-
+@Preview(name = "Food Section - Breakfast", showBackground = true)
 @Composable
-fun NutrientCircle(title: String, amount: String, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(
-            modifier = Modifier
-                .size(70.dp)
-                .border(4.dp, color, CircleShape)
-                .padding(8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("0", fontWeight = FontWeight.Bold)
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(title, color = Color.Gray, fontWeight = FontWeight.Medium)
-        Text(amount, fontSize = 12.sp, color = Color.LightGray)
-    }
+fun FoodSectionBreakfastPreview() {
+    FoodSection(
+        title = "Desayuno",
+        imageRes = android.R.drawable.ic_dialog_info,
+        kcal = 768
+    )
 }
 
+@Preview(name = "Food Section - Snack", showBackground = true)
 @Composable
-fun ActivityCard(icon: String, label: String, kcal: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(icon, fontSize = 26.sp)
-        Text(label, color = Color.Gray)
-        Text(kcal, fontWeight = FontWeight.Bold)
-    }
+fun FoodSectionSnackPreview() {
+    FoodSection(
+        title = "Aperitivos",
+        imageRes = android.R.drawable.ic_input_add,
+        kcal = 256
+    )
 }
-
-
 
 @Composable
 fun BottomNavigationBar() {
@@ -1497,7 +1723,11 @@ fun BottomNavigationBar() {
     }
 }
 
-
+@Preview(name = "Bottom Navigation Bar", showBackground = true)
+@Composable
+fun BottomNavigationBarPreview() {
+    BottomNavigationBar()
+}
 
 
 
@@ -1513,4 +1743,33 @@ fun PreviewSignUpScreen() {
         SignUpScreen(navController = fakeNavController, onBack = {})
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

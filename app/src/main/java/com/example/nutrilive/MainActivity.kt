@@ -620,7 +620,7 @@ fun GenderScreen(
 
 @Preview(
     showSystemUi = true,
-    name = "Gender Selection Screen"
+    name = "Pantalla de seleccion de Genero"
 )
 @Composable
 fun GenderScreenPreview() {
@@ -657,7 +657,7 @@ fun GenderOption(label: String, icon: ImageVector, isSelected: Boolean, onClick:
     }
 }
 
-@Preview(name = "Gender Option - Unselected", showBackground = true)
+@Preview(name = "Opción de género - Seleccionada", showBackground = true)
 @Composable
 fun GenderOptionUnselectedPreview() {
     GenderOption(
@@ -668,7 +668,7 @@ fun GenderOptionUnselectedPreview() {
     )
 }
 
-@Preview(name = "Gender Option - Selected", showBackground = true)
+@Preview(name = "Opción de género - Seleccionada", showBackground = true)
 @Composable
 fun GenderOptionSelectedPreview() {
     GenderOption(
@@ -753,7 +753,7 @@ fun BirthdayScreen(onContinue: (String, String, String) -> Unit) {
 
 @Preview(
     showSystemUi = true,
-    name = "Birthday Input Screen")
+    name = "Pantalla de entrada de cumpleaños")
 @Composable
 fun BirthdayScreenPreview() {
     BirthdayScreen(
@@ -779,7 +779,7 @@ fun BirthdayField(label: String, value: String, onValueChange: (String) -> Unit)
     }
 }
 
-@Preview(name = "Birthday Field - Empty", showBackground = true)
+@Preview(name = "Campo de cumpleaños: vacío", showBackground = true) // creo que no era necesario sobre el cumpleanos pero esta para editar esta parte con todo el grupo
 @Composable
 fun BirthdayFieldEmptyPreview() {
     // 1. Mostrar el campo vacío (estado inicial)
@@ -896,7 +896,7 @@ fun HeightScreen(
 
 @Preview(
     showSystemUi = true,
-    name = "Height Screen - Empty/Invalid"
+    name = "Pantalla de altura - Vacía / Inválida"
 )
 @Composable
 fun HeightScreenEmptyPreview() {
@@ -1004,7 +1004,7 @@ fun WeightScreen(
 
 @Preview(
     showSystemUi = true,
-    name = "Weight Input Screen"
+    name = "Pantalla de entrada de peso"
 )
 @Composable
 fun WeightScreenPreview() {
@@ -1112,7 +1112,7 @@ fun IdealWeightScreen(
 
 @Preview(
     showSystemUi = true,
-    name = "Ideal Weight Input Screen"
+    name = "Pantalla de entrada de peso ideal"
 )
 @Composable
 fun IdealWeightScreenPreview() {
@@ -1219,9 +1219,9 @@ fun CaloriePlanScreen(
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                LegendItem(Color(0xFFE74C3C), "Carbs")
-                LegendItem(Color(0xFF3498DB), "Fats")
-                LegendItem(Color(0xFFF39C12), "Protein")
+                LegendItem(Color(0xFFE74C3C), "Carbohidratos")
+                LegendItem(Color(0xFF3498DB), "Grasas")
+                LegendItem(Color(0xFFF39C12), "Proteinas")
             }
         }
 
@@ -1241,7 +1241,7 @@ fun CaloriePlanScreen(
 
 @Preview(
     showSystemUi = true,
-    name = "Calorie Plan Summary Screen"
+    name = "Pantalla de resumen del plan de calorías"
 )
 @Composable
 fun CaloriePlanScreenPreview() {
@@ -1266,7 +1266,7 @@ fun LegendItem(color: Color, label: String) {
     }
 }
 
-@Preview(name = "Legend Item - Carbs", showBackground = true)
+@Preview(name = "Artículo de registro: carbohidratos", showBackground = true)
 @Composable
 fun LegendItemCarbsPreview() {
     LegendItem(
@@ -1410,7 +1410,7 @@ fun LoginScreen(
 
 @Preview(
     showSystemUi = true,
-    name = "Login Screen"
+    name = "Pantalla de inicio de sesión"
 )
 @Composable
 fun LoginScreenPreview() {
@@ -1492,7 +1492,7 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text("2560", fontSize = 38.sp, fontWeight = FontWeight.Bold)
-                    Text("kcal left", color = Color.Gray)
+                    Text("kcal restantes", color = Color.Gray)
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Row(
@@ -1500,11 +1500,11 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Eaten", color = Color.Gray)
+                            Text("Comido", color = Color.Gray)
                             Text("0 kcal", fontWeight = FontWeight.Bold)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Burned", color = Color.Gray)
+                            Text("Quemado", color = Color.Gray)
                             Text("0 kcal", fontWeight = FontWeight.Bold)
                         }
                     }
@@ -1518,9 +1518,9 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                NutrientCircle("Carbs", "0 / 224 g", Color(0xFFE57373))
-                NutrientCircle("Protein", "0 / 128 g", Color(0xFFFFB74D))
-                NutrientCircle("Fat", "0 / 138 g", Color(0xFF64B5F6))
+                NutrientCircle("carbohidratos", "0 / 224 g", Color(0xFFE57373))
+                NutrientCircle("Proteína", "0 / 128 g", Color(0xFFFFB74D))
+                NutrientCircle("Gordo", "0 / 138 g", Color(0xFF64B5F6))
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -1532,8 +1532,8 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                ActivityCard("🚶‍♂️", "Walking", "0 kcal")
-                ActivityCard("💪", "Activity", "0 kcal")
+                ActivityCard("🚶‍♂️", "Caminando", "0 kcal")
+                ActivityCard("💪", "Actividad", "0 kcal")
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -1551,7 +1551,7 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
 
 @Preview(
     showSystemUi = true,
-    name = "Home Screen - Full View"
+    name = "Pantalla de inicio - Vista completa"
 )
 @Composable
 fun HomeScreenPreview() {
@@ -1579,23 +1579,23 @@ fun NutrientCircle(title: String, amount: String, color: Color) {
     }
 }
 
-@Preview(name = "Nutrient Circle - Carbs", showBackground = true)
+@Preview(name = "Círculo de nutrientes: carbohidratos", showBackground = true)
 @Composable
 fun NutrientCircleCarbsPreview() {
     // Previsualización para Carbs
     NutrientCircle(
-        title = "Carbs",
+        title = "Carbohidratos",
         amount = "0 / 224 g",
         color = Color(0xFFE57373) // Color de ejemplo
     )
 }
 
-@Preview(name = "Nutrient Circle - Protein", showBackground = true)
+@Preview(name = "Círculo de nutrientes - Proteinas", showBackground = true)
 @Composable
 fun NutrientCircleProteinPreview() {
     // Previsualización para Protein
     NutrientCircle(
-        title = "Protein",
+        title = "Proteinas",
         amount = "0 / 128 g",
         color = Color(0xFFFFB74D) // Color de ejemplo
     )
@@ -1610,24 +1610,24 @@ fun ActivityCard(icon: String, label: String, kcal: String) {
     }
 }
 
-@Preview(name = "Activity Card - Walking", showBackground = true)
+@Preview(name = "Tarjeta de actividad: caminar", showBackground = true)
 @Composable
 fun ActivityCardWalkingPreview() {
     // Ejemplo de previsualización para la actividad "Walking"
     ActivityCard(
         icon = "🚶‍♂️", // Un emoji de ejemplo
-        label = "Walking",
+        label = "caminar",
         kcal = "0 kcal"
     )
 }
 
-@Preview(name = "Activity Card - Activity", showBackground = true)
+@Preview(name = "Tarjeta de actividad - Actividad", showBackground = true)
 @Composable
 fun ActivityCardActivityPreview() {
     // Ejemplo de previsualización para la actividad genérica
     ActivityCard(
         icon = "💪", // Otro emoji de ejemplo
-        label = "Activity",
+        label = "Actividad",
         kcal = "0 kcal"
     )
 }
@@ -1669,7 +1669,7 @@ fun FoodSection(title: String, @DrawableRes imageRes: Int, kcal: Int) {
     }
 }
 
-@Preview(name = "Food Section - Breakfast", showBackground = true)
+@Preview(name = "Sección de Alimentos - Desayuno", showBackground = true)
 @Composable
 fun FoodSectionBreakfastPreview() {
     FoodSection(
@@ -1679,7 +1679,7 @@ fun FoodSectionBreakfastPreview() {
     )
 }
 
-@Preview(name = "Food Section - Snack", showBackground = true)
+@Preview(name = "Sección de Alimentos - Aperitivos", showBackground = true)
 @Composable
 fun FoodSectionSnackPreview() {
     FoodSection(
@@ -1720,7 +1720,7 @@ fun BottomNavigationBar() {
 }
 // creacion de configuracion
 
-@Preview(name = "Bottom Navigation Bar", showBackground = true)
+@Preview(name = "Barra de navegación inferior", showBackground = true)
 @Composable
 fun BottomNavigationBarPreview() {
     BottomNavigationBar()
@@ -1741,6 +1741,7 @@ fun PreviewSignUpScreen() {
     }
 }
 
+// hice unos pequenos cambios en algunas partes de traduccion
 
 
 

@@ -49,7 +49,7 @@ data class FoodItem(
     val calories: Int,
     val grams: Int
 )
-@Suppress("UNUSED_PARAMETER")
+@Suppress("PARÁMETRO NO UTILIZADO")
 // Función principal
 @Composable
 fun MealSelectionScreen(
@@ -122,7 +122,7 @@ fun MealSelectionScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // 🔹 Lista de alimentos
+        // 🔹 Lista de alimentos con check
         LazyColumn(
             modifier = Modifier.weight(1f)
         ) {
@@ -160,7 +160,7 @@ fun MealSelectionScreen(
 
                 Button(
                     onClick = {
-                        // Más adelante conectaremos esto a la pantalla de detalle
+                        // Más adelante conectaremos esto a la pantalla de detalle de comida
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5CD6C0)),
                     shape = RoundedCornerShape(20.dp)
@@ -241,10 +241,10 @@ fun FoodItemCard(
 fun sampleFoods(mealType: String): List<FoodItem> {
     return when (mealType.lowercase()) {
         "desayuno" -> listOf(
-            FoodItem("Avena", 150, 100),
-            FoodItem("Pan integral con palta", 220, 120),
+            FoodItem("Avena", 150, 80),
+            FoodItem("Pan integral con palta", 210, 120),
             FoodItem("Huevos revueltos", 180, 90),
-            FoodItem("Yogur natural", 120, 150),
+            FoodItem("Yogur natural", 120, 160),
             FoodItem("Batido de frutas", 200, 250)
         )
         "almuerzo" -> listOf(

@@ -110,9 +110,9 @@ class MainActivity : ComponentActivity() {
 
 object Destinations {
     const val HOME_ROUTE = "home"
-    const val ACCOUNT_ROUTE = "account"
-    const val ADD_ROUTE = "add"
-    const val PROFILE_ROUTE = "profile_main"
+    const val ACCOUNT_ROUTE = "cuenta"
+    const val ADD_ROUTE = "agregar"
+    const val PROFILE_ROUTE = "perfil_principal"
 }
 
 @Composable
@@ -145,7 +145,7 @@ fun AccountScreen(onBack: () -> Unit) {
         ) {
             ProfileCard(
                 name = "Jose",
-                email = "jose.ainsley@yourdomain.com",
+                email = "jose.mamani@gmail.com",
                 onClick = { /* TODO: Navegar a editar perfil */ }
             )
             Spacer(modifier = Modifier.height(24.dp))
@@ -531,9 +531,9 @@ fun DailyCalorieSummaryCard() {
         ) {
             CalorieInfoColumn(
                 icon = Icons.Filled.Restaurant,
-                label = "Eaten",
+                label = "Comida",
                 value = eatenKcal,
-                unit = "kcal",
+                unit = "calorias",
                 color = Color(0xFF1E88E5)
             )
 
@@ -551,7 +551,7 @@ fun DailyCalorieSummaryCard() {
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(text = "$leftKcal", fontSize = 32.sp, fontWeight = FontWeight.Bold, color = Color.Black)
-                    Text(text = "kcal left", fontSize = 14.sp, color = Color.Gray)
+                    Text(text = "calorias restantes", fontSize = 14.sp, color = Color.Gray)
                 }
             }
 
@@ -584,8 +584,8 @@ fun MacroNutrientCircularProgressSection() {
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        MacroCircularProgress(label = "Carbs", consumed = 168, goal = 224, color = Color(0xFFD32F2F))
-        MacroCircularProgress(label = "Protein", consumed = 83, goal = 128, color = Color(0xFFFBC02D))
+        MacroCircularProgress(label = "Carbohidratos", consumed = 168, goal = 224, color = Color(0xFFD32F2F))
+        MacroCircularProgress(label = "Proteinas", consumed = 83, goal = 128, color = Color(0xFFFBC02D))
         MacroCircularProgress(label = "Fat", consumed = 70, goal = 128, color = Color(0xFF1E88E5))
     }
 }

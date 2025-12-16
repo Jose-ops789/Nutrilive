@@ -1520,7 +1520,7 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
             ) {
                 NutrientCircle("carbohidratos", "0 / 224 g", Color(0xFFE57373))
                 NutrientCircle("Proteína", "0 / 128 g", Color(0xFFFFB74D))
-                NutrientCircle("Gordo", "0 / 138 g", Color(0xFF64B5F6))
+                NutrientCircle("peso", "0 / 138 g", Color(0xFF64B5F6))
             }
 
             Spacer(modifier = Modifier.height(20.dp))

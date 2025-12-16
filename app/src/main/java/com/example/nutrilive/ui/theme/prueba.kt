@@ -557,7 +557,7 @@ fun DailyCalorieSummaryCard() {
 
             CalorieInfoColumn(
                 icon = Icons.Filled.FitnessCenter,
-                label = "Burned",
+                label = "Quemado",
                 value = burnedKcal,
                 unit = "kcal",
                 color = Color(0xFFD32F2F)

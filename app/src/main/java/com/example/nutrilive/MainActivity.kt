@@ -1741,7 +1741,6 @@ fun PreviewSignUpScreen() {
     }
 }
 
-// hice unos pequenos cambios en algunas partes de traduccion
 
 
 

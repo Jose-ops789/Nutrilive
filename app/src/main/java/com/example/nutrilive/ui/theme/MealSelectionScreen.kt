@@ -291,7 +291,14 @@ fun sampleFoods(mealType: String): List<FoodItem> {
             FoodItem("Ceviche de pescado", 140, 8),
             FoodItem("Caldo de pollo desgrasado", 50, 2)
         )
-        "aperitivos" -> listOf()
+        "aperitivos" -> listOf(
+            FoodItem("Manzana con mantequilla de maní", 180, 25),
+            FoodItem("Yogur griego con arándanos", 130, 12),
+            FoodItem("Puñado de almendras naturales", 165, 6),
+            FoodItem("Bastones de zanahoria con hummus", 120, 15),
+            FoodItem("Huevo duro con pimienta", 75, 1),
+
+        )
 
         else -> emptyList()
     }

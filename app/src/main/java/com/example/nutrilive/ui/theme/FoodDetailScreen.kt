@@ -260,7 +260,7 @@ fun FoodNutritionScreen() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Protein", color = Color(0xFF2196F3))
+                Text("Proteinas", color = Color(0xFF2196F3))
                 Text("57.1 (18.8%)", color = Color.Gray)
             }
             Row(

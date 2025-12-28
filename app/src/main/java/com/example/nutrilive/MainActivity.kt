@@ -131,46 +131,46 @@ fun AppNavigation(navController: NavHostController) {
             SignUpScreen(navController, onBack = { navController.popBackStack() })
         }
 
-        composable("name") {
+        composable("nombre") {
             NameScreen(onContinue = { name ->
 
-                navController.navigate("gender")
+                navController.navigate("genero")
             })
         }
-        composable("gender") {
+        composable("genero") {
             GenderScreen(
                 onContinue = { gender ->
                     // Ir al siguiente paso
-                    navController.navigate("birthday")
+                    navController.navigate("cumpleaños")
                 },
                 onBack = { navController.popBackStack() }
             )
         }
-        composable("birthday") {
+        composable("cumpleaños") {
             BirthdayScreen(onContinue = { day, month, year ->
                
-                navController.navigate("height")
+                navController.navigate("altura")
             })
         }
-        composable("height") {
+        composable("altura") {
             HeightScreen(
                 onContinue = { heightCm ->
 
-                    navController.navigate("weight")
+                    navController.navigate("peso")
                 },
                 onBack = { navController.popBackStack() }
             )
         }
-        composable("weight") {
+        composable("peso") {
             WeightScreen(
                 onContinue = { weightKg ->
 
-                    navController.navigate("ideal_weight")
+                    navController.navigate("ideal_peso")
                 },
                 onBack = { navController.popBackStack() }
             )
         }
-        composable("ideal_weight") {
+        composable("ideal_peso") {
             IdealWeightScreen(
                 onContinue = { idealWeightKg ->
 

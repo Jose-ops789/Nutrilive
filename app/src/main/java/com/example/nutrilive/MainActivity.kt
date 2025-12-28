@@ -120,7 +120,7 @@ fun AppNavigation(navController: NavHostController) {
             })
         }
 
-        composable("welcome") {
+        composable("Bienvenido") {
             WelcomeScreen(onSignUpClick = { navController.navigate("signup") },
             onLoginClick = { navController.navigate("login") }
             )

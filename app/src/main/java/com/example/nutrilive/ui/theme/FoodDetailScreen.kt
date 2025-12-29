@@ -417,11 +417,11 @@ fun HomeVisualScreen() {
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Eaten", fontWeight = FontWeight.Bold)
+                            Text("Comida", fontWeight = FontWeight.Bold)
                             Text("1634 kcal", color = Color.Gray, fontSize = 13.sp)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Burned", fontWeight = FontWeight.Bold)
+                        Text("Quemado", fontWeight = FontWeight.Bold)
                             Text("265 kcal", color = Color.Gray, fontSize = 13.sp)
                         }
                     }

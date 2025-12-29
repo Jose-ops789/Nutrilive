@@ -415,7 +415,7 @@ fun SignUpScreen(navController: NavController, onBack: () -> Unit) {
 
         // Boton principal
         Button(
-            onClick = { navController.navigate("name") },
+            onClick = { navController.navigate("nombre") },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6CE5E8)),
             modifier = Modifier
                 .fillMaxWidth()

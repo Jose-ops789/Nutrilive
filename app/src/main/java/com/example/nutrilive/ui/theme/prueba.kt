@@ -88,23 +88,39 @@ import androidx.navigation.compose.composable
 import androidx.compose.ui.platform.LocalContext
 
 // ----------------------------------------------------------------
-// --- DESIGN SYSTEM (COLORES Y CONSTANTES) ---
+// --- DESIGN SYSTEM: COLORES ---
 // ----------------------------------------------------------------
 
-val PrimaryColor = Color(0xFF47B8C9)
-val SecondaryColor = Color(0xFFFBC02D)
-val BackgroundColor = Color(0xFFF0F0F0)
-val SurfaceColor = Color.White
-val TextPrimary = Color.Black
-val TextSecondary = Color.Gray
-val ErrorColor = Color(0xFFD32F2F)
+// ==========================================
+// 1. PALETA BASE (Los colores "crudos")
+// ==========================================
+val PrimaryColor      = Color(0xFF47B8C9) // Cian / Turquesa
+val SecondaryColor    = Color(0xFFFBC02D) // Amarillo Ámbar
+val BackgroundColor   = Color(0xFFF0F0F0) // Gris muy claro
+val SurfaceColor      = Color.White
+val ErrorColor        = Color(0xFFD32F2F) // Rojo Alerta
+val SuccessColor      = Color(0xFF43A047) // Verde Éxito
+val BlueAccent        = Color(0xFF1E88E5) // Azul Intenso
 
-val MacroCarbColor = ErrorColor
-val MacroProteinColor = SecondaryColor
-val MacroFatColor = Color(0xFF1E88E5)
-val CalorieBurnColor = ErrorColor
-val CalorieEatenColor = MacroFatColor
-val CalorieLeftColor = Color(0xFF43A047)
+// ==========================================
+// 2. TIPOGRAFÍA
+// ==========================================
+val TextPrimary       = Color.Black
+val TextSecondary     = Color.Gray
+
+// ==========================================
+// 3. COLORES SEMÁNTICOS (Nutrición)
+// ==========================================
+
+// --- Macros ---
+val MacroCarbColor    = ErrorColor      // Rojo (Atención a los carbos)
+val MacroProteinColor = SecondaryColor  // Amarillo/Naranja (Energía)
+val MacroFatColor     = BlueAccent      // Azul
+
+// --- Calorías ---
+val CalorieBurnColor  = ErrorColor      // Quema (Rojo/Calor)
+val CalorieEatenColor = MacroFatColor   // Ingesta (Mismo que grasas/azul)
+val CalorieLeftColor  = SuccessColor    // Restante (Verde/Meta)
 
 // ----------------------------------------------------------------
 // --- MAIN ACTIVITY Y NAVEGACIÓN ---

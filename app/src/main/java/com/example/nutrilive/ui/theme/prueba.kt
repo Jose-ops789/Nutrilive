@@ -102,15 +102,11 @@ val ErrorColor        = Color(0xFFD32F2F) // Rojo Alerta
 val SuccessColor      = Color(0xFF43A047) // Verde Éxito
 val BlueAccent        = Color(0xFF1E88E5) // Azul Intenso
 
-// ==========================================
 // 2. TIPOGRAFÍA
-// ==========================================
 val TextPrimary       = Color.Black
 val TextSecondary     = Color.Gray
 
-// ==========================================
 // 3. COLORES SEMÁNTICOS (Nutrición)
-// ==========================================
 
 // --- Macros ---
 val MacroCarbColor    = ErrorColor      // Rojo (Atención a los carbos)
@@ -121,10 +117,7 @@ val MacroFatColor     = BlueAccent      // Azul
 val CalorieBurnColor  = ErrorColor      // Quema (Rojo/Calor)
 val CalorieEatenColor = MacroFatColor   // Ingesta (Mismo que grasas/azul)
 val CalorieLeftColor  = SuccessColor    // Restante (Verde/Meta)
-
-// ----------------------------------------------------------------
 // --- MAIN ACTIVITY Y NAVEGACIÓN ---
-// ----------------------------------------------------------------
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -187,9 +180,7 @@ fun SimplePlaceholderScreen(route: String, title: String, navController: NavHost
     }
 }
 
-// ----------------------------------------------------------------
-// --- BARRA DE NAVEGACIÓN INFERIOR (Resolviendo 'Unresolved reference 'NutriLiveBottomBar' .472) ---
-// ----------------------------------------------------------------
+// --- BARRA DE NAVEGACIÓN INFERIOR (Resolviendo 'Unresolved reference
 
 data class BottomNavItem(val label: String, val icon: ImageVector, val route: String)
 
@@ -236,11 +227,7 @@ fun NutriLiveBottomBar(navController: NavHostController) {
     }
 }
 
-
-// ----------------------------------------------------------------
-// --- PANTALLA DE CUENTA (AccountScreenRefactored) ---
-// ----------------------------------------------------------------
-
+// --- PANTALLA DE CUENTA (AccountScreenRefactored)
 // Resolviendo 'Unresolved reference 'AccountTopBar' .153
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -444,10 +431,7 @@ fun AccountScreenRefactored(onBack: () -> Unit) {
     }
 }
 
-
-// ----------------------------------------------------------------
 // --- PANTALLA HOME (HomeScreenRefactored) ---
-// ----------------------------------------------------------------
 
 @Composable
 fun HomeScreenRefactored(onAccountClick: () -> Unit) {

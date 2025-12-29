@@ -258,7 +258,7 @@ fun SplashScreen(onTimeout: () -> Unit) {
     }
 }
 
-@Preview(showSystemUi = true, name = "Splash Screen")
+@Preview(showSystemUi = true, name = "Pantalla de bienvenida")
 @Composable
 fun SplashScreenPreview() {
     SplashScreen(onTimeout = {
@@ -331,7 +331,7 @@ fun WelcomeScreen(
     }
 }
 
-@Preview(showBackground = true, name = "Welcome Screen Preview")
+@Preview(showBackground = true, name = "Vista previa de la pantalla de bienvenida")
 @Composable
 fun WelcomeScreenPreview() {
     WelcomeScreen(

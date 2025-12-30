@@ -260,7 +260,7 @@ fun FoodNutritionScreen() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Protein", color = Color(0xFF2196F3))
+                Text("Proteinas", color = Color(0xFF2196F3))
                 Text("57.1 (18.8%)", color = Color.Gray)
             }
             Row(
@@ -290,7 +290,7 @@ fun FoodNutritionScreen() {
         Spacer(modifier = Modifier.height(24.dp))
 
         //  Peso y cantidad
-        Text("Weight", color = Color.Gray, fontSize = 14.sp)
+        Text("Peso", color = Color.Gray, fontSize = 14.sp)
         Spacer(modifier = Modifier.height(4.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -417,11 +417,11 @@ fun HomeVisualScreen() {
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Eaten", fontWeight = FontWeight.Bold)
+                            Text("Comida", fontWeight = FontWeight.Bold)
                             Text("1634 kcal", color = Color.Gray, fontSize = 13.sp)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Burned", fontWeight = FontWeight.Bold)
+                        Text("Quemado", fontWeight = FontWeight.Bold)
                             Text("265 kcal", color = Color.Gray, fontSize = 13.sp)
                         }
                     }

@@ -49,7 +49,7 @@ data class FoodItem(
     val calories: Int,
     val grams: Int
 )
-@Suppress("UNUSED_PARAMETER")
+@Suppress("PARÁMETRO NO UTILIZADO")
 // Función principal
 @Composable
 fun MealSelectionScreen(
@@ -122,7 +122,7 @@ fun MealSelectionScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        // 🔹 Lista de alimentos
+        // 🔹 Lista de alimentos con check
         LazyColumn(
             modifier = Modifier.weight(1f)
         ) {
@@ -160,7 +160,7 @@ fun MealSelectionScreen(
 
                 Button(
                     onClick = {
-                        // Más adelante conectaremos esto a la pantalla de detalle
+                        // Más adelante conectaremos esto a la pantalla de detalle de comida
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5CD6C0)),
                     shape = RoundedCornerShape(20.dp)
@@ -241,33 +241,74 @@ fun FoodItemCard(
 fun sampleFoods(mealType: String): List<FoodItem> {
     return when (mealType.lowercase()) {
         "desayuno" -> listOf(
-            FoodItem("Avena", 150, 100),
-            FoodItem("Pan integral con palta", 220, 120),
-            FoodItem("Huevos revueltos", 180, 90),
-            FoodItem("Yogur natural", 120, 150),
-            FoodItem("Batido de frutas", 200, 250)
+            FoodItem("Avena con canela", 150, 27),
+            FoodItem("Pan integral con palta", 210, 25),
+            FoodItem("Huevos revueltos con espinaca", 180, 2),
+            FoodItem("Yogur griego natural", 120, 6),
+            FoodItem("Batido de plátano y arándanos", 200, 45),
+            FoodItem("Omelette de claras y pavo", 140, 1),
+            FoodItem("Pancakes de avena y clara", 220, 30),
+            FoodItem("Tostadas con crema de maní", 250, 22),
+            FoodItem("Bowl de papaya y piña", 90, 22),
+            FoodItem("Chia pudding con coco", 180, 15),
+            FoodItem("Muesli con leche de almendras", 210, 35),
+            FoodItem("Requesón con fresas", 130, 8),
+            FoodItem("Arepa de maíz con queso", 230, 32),
+            FoodItem("Wrap de huevo y vegetales", 190, 18),
+            FoodItem("Smoothie verde (Espinaca/Manzana)", 110, 25)
         )
         "almuerzo" -> listOf(
-            FoodItem("Pechuga de pollo", 300, 150),
-            FoodItem("Arroz integral", 210, 150),
-            FoodItem("Ensalada mixta", 90, 200),
-            FoodItem("Sopa de verduras", 120, 250),
-            FoodItem("Pasta con atún", 350, 200)
+            FoodItem("Pechuga de pollo a la plancha", 165, 0),
+            FoodItem("Arroz integral con verduras", 150, 32),
+            FoodItem("Ensalada de quinua y tomate", 160, 28),
+            FoodItem("Filete de merluza al horno", 110, 0),
+            FoodItem("Lentejas con zanahoria", 140, 24),
+            FoodItem("Pasta integral al pesto", 220, 38),
+            FoodItem("Salmón con espárragos", 210, 2),
+            FoodItem("Guiso de garbanzos", 180, 30),
+            FoodItem("Pechuga de pavo asada", 135, 0),
+            FoodItem("Bowl de burrito saludable", 280, 40),
+            FoodItem("Atún con ensalada verde", 140, 3),
+            FoodItem("Carne de res magra", 190, 0),
+            FoodItem("Cuscús con vegetales asados", 170, 34),
+            FoodItem("Pollo salteado con brócoli", 155, 6),
+            FoodItem("Sopa de minestrone", 120, 18)
         )
         "cena" -> listOf(
-            FoodItem("Hamburguesa con queso", 303, 150),
-            FoodItem("Puré de papas", 240, 200),
-            FoodItem("Pizza", 200, 100),
-            FoodItem("Huevo revuelto", 160, 80),
-            FoodItem("Pollo a la parrilla", 350, 300)
+            FoodItem("Sopa de verduras clara", 60, 12),
+            FoodItem("Tofu salteado", 110, 4),
+            FoodItem("Ensalada de espinaca y nueces", 140, 7),
+            FoodItem("Pescado blanco al vapor", 95, 0),
+            FoodItem("Crema de zapallo (Calabaza)", 85, 14),
+            FoodItem("Rollitos de jamón de pavo", 100, 2),
+            FoodItem("Brocheta de pollo y morrón", 130, 4),
+            FoodItem("Huevo duro con tomate", 110, 2),
+            FoodItem("Champiñones al ajillo", 70, 5),
+            FoodItem("Ensalada de atún y apio", 125, 2),
+            FoodItem("Berenjenas al horno", 90, 10),
+            FoodItem("Espárragos con queso parmesano", 115, 6),
+            FoodItem("Pechuga de pollo desmechada", 120, 0),
+            FoodItem("Ceviche de pescado", 140, 8),
+            FoodItem("Caldo de pollo desgrasado", 50, 2)
         )
-        "snack", "aperitivos" -> listOf(
-            FoodItem("Barra de cereal", 120, 50),
-            FoodItem("Yogur griego", 100, 100),
-            FoodItem("Frutos secos", 180, 40),
-            FoodItem("Manzana", 80, 120),
-            FoodItem("Palomitas de maíz", 150, 100)
+        "aperitivos" -> listOf(
+            FoodItem("Chips de kale al horno", 65, 8),
+            FoodItem("Bruschetta de tomate y albahaca", 120, 18),
+            FoodItem("Mousse de palta y cacao", 150, 12),
+            FoodItem("Brochetas de tomate cherry y mozzarella", 110, 3),
+            FoodItem("Dátiles rellenos con nueces", 140, 28),
+            FoodItem("Yogur con granola artesanal y miel", 190, 25),
+            FoodItem("Rollitos de pepino con salmón ahumado", 130, 4),
+            FoodItem("Tostada de arroz con crema de almendras", 160, 15),
+            FoodItem("Smoothie bowl de frutos rojos", 180, 35),
+            FoodItem("Hummus de remolacha con pita integral", 145, 22),
+            FoodItem("Pudin de chocolate con semillas de chía", 170, 15),
+            FoodItem("Ceviche de champiñones", 80, 12),
+            FoodItem("Garbanzos con paprika y limón", 130, 18),
+            FoodItem("Manzana asada con canela", 95, 20),
+            FoodItem("Carpaccio de calabacín con parmesano", 85, 6)
         )
+
         else -> emptyList()
     }
 }

@@ -290,7 +290,7 @@ fun FoodNutritionScreen() {
         Spacer(modifier = Modifier.height(24.dp))
 
         //  Peso y cantidad
-        Text("Weight", color = Color.Gray, fontSize = 14.sp)
+        Text("Peso", color = Color.Gray, fontSize = 14.sp)
         Spacer(modifier = Modifier.height(4.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,

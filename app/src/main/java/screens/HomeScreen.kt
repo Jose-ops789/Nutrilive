@@ -49,12 +49,31 @@ private val TextSecondary = Color(0xFF6E6E73)
 @Composable
 fun HomeScreen(
     onAccountClick: () -> Unit = {},
-    onMealClick: (String) -> Unit = {}
+    onMealClick: (String) -> Unit = {},
+            onLogout: () -> Unit
 ) {
+    var showLogoutDialog by remember { mutableStateOf(false) }
+
     Scaffold(
         containerColor = Background,
-        bottomBar = { BottomNavigationBar() }
+        bottomBar = {
+            BottomNavigationBar(
+                onAccountClick = { showLogoutDialog = true }
+            )
+        }
     ) { padding ->
+        LogoutDialog(
+            show = showLogoutDialog,
+            onConfirm = {
+                showLogoutDialog = false
+                // 👉 AQUÍ luego pondrás tu lógica real de cerrar sesión
+                onLogout() // por ejemplo: auth.signOut()
+            },
+            onDismiss = {
+                showLogoutDialog = false
+            }
+        )
+
 
         Column(
             modifier = Modifier
@@ -302,7 +321,7 @@ fun CalendarButton() {
 /* ---------------------- BOTTOM NAV ---------------------- */
 
 @Composable
-fun BottomNavigationBar() {
+fun BottomNavigationBar( onAccountClick: () -> Unit) {
     NavigationBar(containerColor = Color.White, tonalElevation = 4.dp) {
 
         NavigationBarItem(
@@ -321,10 +340,12 @@ fun BottomNavigationBar() {
 
         NavigationBarItem(
             selected = false,
-            onClick = {},
+            onClick = onAccountClick,
             icon = { Icon(Icons.Default.Person, null) },
             label = { Text("Cuenta") }
         )
+
+
     }
 }
 
@@ -333,7 +354,11 @@ fun BottomNavigationBar() {
 @Preview(showSystemUi = true)
 @Composable
 fun HomePreview() {
-    HomeScreen()
+    HomeScreen(
+        onAccountClick = {},
+        onMealClick = {},
+        onLogout = {}
+    )
 }
 
 
@@ -485,3 +510,38 @@ private fun StatCard(
 /* ---------------------- SNACKBAR FEEDBACK ---------------------- */
 
 
+@Composable
+fun LogoutDialog(
+    show: Boolean,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    if (show) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = {
+                Text(
+                    text = "Cerrar sesión",
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            text = {
+                Text("¿Estás seguro de que deseas cerrar sesión?")
+            },
+            confirmButton = {
+                TextButton(onClick = onConfirm) {
+                    Text(
+                        "Cerrar sesión",
+                        color = Color.Red,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = onDismiss) {
+                    Text("Cancelar")
+                }
+            }
+        )
+    }
+}

@@ -4,13 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,10 +30,8 @@ import androidx.compose.material.icons.automirrored.filled.Article
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Female
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Male
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
@@ -63,11 +58,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -107,288 +100,6 @@ fun AppNavigationPreview() {
 
 
 
-
-
-
-
-
-
-@Composable
-fun GenderScreen(
-    onContinue: (String) -> Unit,
-    onBack: () -> Unit
-) {
-    var selectedGender by remember { mutableStateOf<String?>(null) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 24.dp, vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-
-        Column {
-            // Botón de retroceso
-            IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver", tint = Color.Black)
-            }
-
-            // Barra de progreso
-            LinearProgressIndicator(
-                progress = { 2f / 7f },
-                color = Color(0xFF6CE5E8),
-                trackColor = Color.LightGray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(6.dp)
-                    .padding(bottom = 8.dp)
-            )
-
-            // Texto de paso
-            Text(
-                text = "2/7",
-                color = Color.Gray,
-                modifier = Modifier.align(Alignment.End)
-            )
-
-            Spacer(modifier = Modifier.height(40.dp))
-
-            // Título
-            Text(
-                text = "¿Cuál es tu género?",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.Black
-            )
-
-            Spacer(modifier = Modifier.height(60.dp))
-
-            // Opciones de género
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                GenderOption(
-                    label = "Masculino",
-                    icon = Icons.Default.Male,
-                    isSelected = selectedGender == "Masculino",
-                    onClick = { selectedGender = "Masculino" }
-                )
-                GenderOption(
-                    label = "Femenino",
-                    icon = Icons.Default.Female,
-                    isSelected = selectedGender == "Femenino",
-                    onClick = { selectedGender = "Femenino" }
-                )
-            }
-        }
-
-        // Botón inferior
-        // Animación suave de color según selección
-        val buttonColor by animateColorAsState(
-            targetValue = if (selectedGender != null) Color(0xFF47B8C9) else Color.LightGray,
-            animationSpec = tween(durationMillis = 500)
-        )
-
-        Button(
-            onClick = { selectedGender?.let { onContinue(it) } },
-            enabled = selectedGender != null,
-            colors = ButtonDefaults.buttonColors(containerColor = buttonColor),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(50)
-        ) {
-            Text("Continuar", color = Color.White)
-        }
-
-    }
-}
-
-@Preview(
-    showSystemUi = true,
-    name = "Gender Selection Screen"
-)
-@Composable
-fun GenderScreenPreview() {
-    GenderScreen(
-        onContinue = { gender ->
-        },
-        onBack = {
-        }
-    )
-}
-
-@Composable
-fun GenderOption(label: String, icon: ImageVector, isSelected: Boolean, onClick: () -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(
-            modifier = Modifier
-                .size(80.dp)
-                .clip(CircleShape)
-                .background(if (isSelected) Color(0xFF6CE5E8) else Color.Transparent)
-                .border(
-                    width = 2.dp,
-                    color = if (isSelected) Color.Transparent else Color.Black,
-                    shape = CircleShape
-                )
-                .clickable { onClick() },
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(icon, contentDescription = label, tint = Color.Black, modifier = Modifier.size(32.dp))
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(label, color = Color.Black, fontSize = 16.sp)
-    }
-}
-
-@Preview(name = "Gender Option - Unselected", showBackground = true)
-@Composable
-fun GenderOptionUnselectedPreview() {
-    GenderOption(
-        label = "Masculino",
-        icon = Icons.Default.Male,
-        isSelected = false, // Estado inicial: NO seleccionado
-        onClick = { }
-    )
-}
-
-@Preview(name = "Gender Option - Selected", showBackground = true)
-@Composable
-fun GenderOptionSelectedPreview() {
-    GenderOption(
-        label = "Femenino",
-        icon = Icons.Default.Female,
-        isSelected = true, // Estado: SELECCIONADO
-        onClick = { }
-    )
-}
-
-@Composable
-fun BirthdayScreen(onContinue: (String, String, String) -> Unit) {
-    var day by remember { mutableStateOf("") }
-    var month by remember { mutableStateOf("") }
-    var year by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 24.dp, vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            // Progreso
-            LinearProgressIndicator(
-                progress = {3f / 7f},
-                color = Color(0xFF47B8C9),
-                trackColor = Color.LightGray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(6.dp)
-            )
-
-            Text(
-                text = "3/7",
-                color = Color.Gray,
-                modifier = Modifier.align(Alignment.End).padding(top = 4.dp)
-            )
-
-            Spacer(modifier = Modifier.height(40.dp))
-
-            Text(
-                text = "¿Cuándo es tu cumpleaños?",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.Black
-            )
-
-            Spacer(modifier = Modifier.height(50.dp))
-
-            // Campos Día, Mes, Año
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                BirthdayField(label = "Día", value = day, onValueChange = { day = it })
-                BirthdayField(label = "Mes", value = month, onValueChange = { month = it })
-                BirthdayField(label = "Año", value = year, onValueChange = { year = it })
-            }
-        }
-
-        // Botón Continuar
-        Button(
-            onClick = {
-                if (day.isNotBlank() && month.isNotBlank() && year.isNotBlank()) {
-                    onContinue(day, month, year)
-                }
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF47B8C9)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(50)
-        ) {
-            Text("Continuar", color = Color.White)
-        }
-    }
-}
-// fecha de cumpleaños
-
-@Preview(
-    showSystemUi = true,
-    name = "Birthday Input Screen")
-@Composable
-fun BirthdayScreenPreview() {
-    BirthdayScreen(
-        onContinue = { day, month, year ->
-        }
-    )
-}
-
-@Composable
-fun BirthdayField(label: String, value: String, onValueChange: (String) -> Unit) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(label, color = Color.Gray)
-        Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            singleLine = true,
-            modifier = Modifier
-                .width(90.dp)
-                .height(56.dp),
-            shape = RoundedCornerShape(8.dp)
-        )
-    }
-}
-
-@Preview(name = "Birthday Field - Empty", showBackground = true)
-@Composable
-fun BirthdayFieldEmptyPreview() {
-    // 1. Mostrar el campo vacío (estado inicial)
-    BirthdayField(
-        label = "Día",
-        value = "",
-        onValueChange = { }
-    )
-}
-
-@Preview(name = "Birthday Field - Filled", showBackground = true)
-@Composable
-fun BirthdayFieldFilledPreview() {
-    // 2. Mostrar el campo con un valor (estado de llenado)
-    BirthdayField(
-        label = "Año",
-        value = "2001",
-        onValueChange = { }
-    )
-}
 
 @Composable
 fun HeightScreen(

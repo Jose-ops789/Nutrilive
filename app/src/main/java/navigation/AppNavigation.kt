@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.nutrilive.BirthdayScreen
+import screens.BirthdayScreen
 import com.example.nutrilive.CaloriePlanScreen
-import com.example.nutrilive.GenderScreen
+import screens.GenderScreen
 import com.example.nutrilive.HeightScreen
 import com.example.nutrilive.HomeScreen
 import com.example.nutrilive.IdealWeightScreen

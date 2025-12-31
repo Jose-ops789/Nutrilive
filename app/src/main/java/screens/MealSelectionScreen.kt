@@ -161,15 +161,23 @@ fun MealSelectionScreen(
 
                 Button(
                     onClick = {
-                        navController?.currentBackStackEntry
-                            ?.savedStateHandle
-                            ?.set("foods", selectedFoods)
 
-                        navController?.navigate("meal_summary/$mealType")
+                        val calories = selectedFoods.sumOf { it.calories }
+
+                        when (mealType.lowercase()) {
+                            "desayuno" -> CaloriesState.breakfastCalories.intValue += calories
+                            "almuerzo" -> CaloriesState.lunchCalories.intValue += calories
+                            "cena" -> CaloriesState.dinnerCalories.intValue += calories
+                            "aperitivos" -> CaloriesState.snacksCalories.intValue += calories
+                        }
+
+                        CaloriesState.recalculate()
+
+                        navController?.popBackStack()
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5CD6C0))
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Ver (${selectedFoods.size})", color = Color.White)
+                    Text("Guardar comida")
                 }
             }
         }

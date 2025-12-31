@@ -15,7 +15,7 @@ import com.example.nutrilive.NameScreen
 import com.example.nutrilive.SignUpScreen
 import com.example.nutrilive.screens.SplashScreen
 import com.example.nutrilive.WeightScreen
-import com.example.nutrilive.WelcomeScreen
+import com.example.nutrilive.screens.WelcomeScreen
 
 
 

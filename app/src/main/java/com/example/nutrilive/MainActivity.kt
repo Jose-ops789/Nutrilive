@@ -49,7 +49,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
@@ -78,7 +77,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.nutrilive.ui.theme.NutriliveTheme
 import navigation.AppNavigation
@@ -111,189 +109,9 @@ fun AppNavigationPreview() {
 
 
 
-@Composable
 
-fun SignUpScreen(navController: NavController, onBack: () -> Unit) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var isChecked by remember { mutableStateOf(false) }
-    var showPassword by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Únase a NutriLife hoy ✨",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "Crea una cuenta NutriLife para hacer un seguimiento de tus comidas, mantenerte activo y alcanzar tus objetivos de salud.",
-            fontSize = 14.sp,
-            color = Color.Gray
-        )
-        Spacer(modifier = Modifier.height(24.dp))
 
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
-            leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Email") },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Contraseña") },
-            leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Contraseña") },
-            trailingIcon = {
-                val image = if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility
-                IconButton(onClick = { showPassword = !showPassword }) {
-                    Icon(image, contentDescription = "Mostrar/ocultar contraseña")
-                }
-            },
-            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Checkbox(checked = isChecked, onCheckedChange = { isChecked = it })
-            Text("Estoy de acuerdo con NutriLife", color = Color.Gray)
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // Boton olver
-        TextButton(onClick = { onBack() }) {
-            Text("← Volver", color = Color(0xFF6CE5E8))
-        }
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        // Boton principal
-        Button(
-            onClick = { navController.navigate("name") },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6CE5E8)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(50)
-        ) {
-            Text("Inscribirse", color = Color.White, fontWeight = FontWeight.Bold)
-        }
-
-    }
-}
-//Primera pantalla para como te llamas
-
-@Preview(showSystemUi = true, name = "Sign Up Screen")
-@Composable
-fun SignUpScreenPreview() {
-    val navController = rememberNavController()
-    SignUpScreen(
-        navController = navController,
-        onBack = {
-        }
-    )
-}
-
-@Composable
-fun NameScreen(onContinue: (String) -> Unit) {
-    var name by remember { mutableStateOf("") }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 24.dp, vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            // Barra de progreso
-            LinearProgressIndicator(
-                progress = {1f / 7f},
-                color = Color(0xFF6CE5E8),
-                trackColor = Color.LightGray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(6.dp)
-                    .padding(bottom = 8.dp)
-            )
-
-            // Texto de paso
-            Text(
-                text = "1/7",
-                color = Color.Gray,
-                modifier = Modifier.align(Alignment.End)
-            )
-
-            Spacer(modifier = Modifier.height(40.dp))
-
-            // Título
-            Text(
-                text = "¿Cómo te llamas?",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.Black
-            )
-
-            Spacer(modifier = Modifier.height(60.dp))
-
-            // Campo de texto
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                singleLine = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                textStyle = LocalTextStyle.current.copy(
-                    fontSize = 20.sp,
-                    color = Color.Black
-                ),
-                placeholder = { Text("Tu nombre") },
-                shape = RoundedCornerShape(8.dp)
-            )
-        }
-
-        // Botón inferior
-        Button(
-            onClick = { if (name.isNotBlank()) onContinue(name) },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF47B8C9)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(50)
-        ) {
-            Text("Continuar", color = Color.White)
-        }
-    }
-}
-
-@Preview(showSystemUi = true, name = "Name Input Screen")
-@Composable
-fun NameScreenPreview() {
-    NameScreen(
-        onContinue = { name ->
-            println("Nombre capturado: $name")
-        }
-    )
-}
 
 @Composable
 fun GenderScreen(
@@ -1503,14 +1321,6 @@ fun BottomNavigationBarPreview() {
 
 
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewSignUpScreen() {
-    val fakeNavController = rememberNavController() // se usa solo para preview
-    NutriliveTheme {
-        SignUpScreen(navController = fakeNavController, onBack = {})
-    }
-}
 
 
 

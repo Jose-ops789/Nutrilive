@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
-
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,7 +30,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Article
-
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Email
@@ -48,22 +46,18 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CircularProgressIndicator
-
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -85,12 +79,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.nutrilive.ui.theme.NutriliveTheme
-import kotlinx.coroutines.delay
+import navigation.AppNavigation
 
 
 class MainActivity : ComponentActivity() {
@@ -107,107 +98,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun AppNavigation(navController: NavHostController) {
-    //  cambiamos el destino inicial a "splash"
-    NavHost(navController = navController, startDestination = "splash") {
 
-        // nueva pantalla Splash
-        composable("splash") {
-            SplashScreen(onTimeout = {
-                navController.navigate("welcome") {
-                    popUpTo("splash") { inclusive = true }
-                }
-            })
-        }
-
-        composable("welcome") {
-            WelcomeScreen(onSignUpClick = { navController.navigate("signup") },
-            onLoginClick = { navController.navigate("login") }
-            )
-        }
-
-
-        composable("signup") {
-            SignUpScreen(navController, onBack = { navController.popBackStack() })
-        }
-
-        composable("name") {
-            NameScreen(onContinue = { name ->
-
-                navController.navigate("gender")
-            })
-        }
-        composable("gender") {
-            GenderScreen(
-                onContinue = { gender ->
-                    // Ir al siguiente paso
-                    navController.navigate("birthday")
-                },
-                onBack = { navController.popBackStack() }
-            )
-        }
-        composable("birthday") {
-            BirthdayScreen(onContinue = { day, month, year ->
-
-                navController.navigate("height")
-            })
-        }
-        composable("height") {
-            HeightScreen(
-                onContinue = { heightCm ->
-
-                    navController.navigate("weight")
-                },
-                onBack = { navController.popBackStack() }
-            )
-        }
-        composable("weight") {
-            WeightScreen(
-                onContinue = { weightKg ->
-
-                    navController.navigate("ideal_weight")
-                },
-                onBack = { navController.popBackStack() }
-            )
-        }
-        composable("ideal_weight") {
-            IdealWeightScreen(
-                onContinue = { idealWeightKg ->
-
-                    navController.navigate("calorie_plan")
-                },
-                onBack = { navController.popBackStack() }
-            )
-        }
-        composable("calorie_plan") {
-            CaloriePlanScreen(
-                onStartPlan = {
-                    // Aquí podrías ir a tu pantalla principal (por ahora vuelve atrás)
-                    navController.navigate("login")
-                },
-                onBack = { navController.popBackStack() }
-            )
-        }
-        composable("login") {
-            LoginScreen(
-                onBack = { navController.popBackStack() },
-                onSignUpClick = { navController.navigate("signup") },
-                onLoginSuccess = {
-                    navController.navigate("home") {
-                        popUpTo("login") { inclusive = true }
-                    }
-                }
-            )
-        }
-        composable("home") {
-            HomeScreen(onAccountClick = { /* abrir perfil o notificaciones */ })
-        }
-
-
-
-    }
-}
 
 @Preview(showSystemUi = true, name = "App Navigation")
 @Composable
@@ -216,55 +107,7 @@ fun AppNavigationPreview() {
     AppNavigation(navController = navController)
 }
 
-@Composable
-fun SplashScreen(onTimeout: () -> Unit) {
-    // Muestra la pantalla de carga por 3 segundos
-    LaunchedEffect(Unit) {
-        delay(3000)
-        onTimeout()
-    }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFF6CE5E8)),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            // Logo
-            Image(
-                painter = painterResource(id = R.drawable.logo_nutrilife),
-                contentDescription = "Logo NutriLife",
-                modifier = Modifier.size(120.dp)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Nombre
-            Text(
-                text = "NutriLife",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Indicador de carga
-            CircularProgressIndicator(
-                color = Color.Black,
-                strokeWidth = 3.dp
-            )
-        }
-    }
-}
-
-@Preview(showSystemUi = true, name = "Splash Screen")
-@Composable
-fun SplashScreenPreview() {
-    SplashScreen(onTimeout = {
-    })
-}
 
 @Composable
 fun WelcomeScreen(

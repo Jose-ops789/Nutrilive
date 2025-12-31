@@ -18,48 +18,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Article
 import androidx.compose.material.icons.filled.AddCircleOutline
 import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -123,291 +102,8 @@ fun LegendItemCarbsPreview() {
 }
 
 
-@Composable
-fun LoginScreen(
-    onBack: () -> Unit,
-    onSignUpClick: () -> Unit,
-    onLoginSuccess: () -> Unit
-) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var rememberMe by remember { mutableStateOf(false) }
-    var showPassword by remember { mutableStateOf(false) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 24.dp, vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(horizontalAlignment = Alignment.Start) {
-
-            // Botón volver
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Volver",
-                    tint = Color.Black
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Título
-            Text(
-                text = "¡Bienvenido de nuevo! 👋",
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-            Text(
-                text = "Inicia sesión para continuar tu viaje hacia una vida más saludable.",
-                fontSize = 14.sp,
-                color = Color.Gray
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Email
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("Email") },
-                leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Email") },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Contraseña
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = { Text("Contraseña") },
-                leadingIcon = { Icon(Icons.Filled.Lock, contentDescription = "Contraseña") },
-                trailingIcon = {
-                    val image = if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility
-                    IconButton(onClick = { showPassword = !showPassword }) {
-                        Icon(image, contentDescription = "Mostrar/ocultar contraseña")
-                    }
-                },
-                visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Recordar y contraseña olvidada
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Checkbox(checked = rememberMe, onCheckedChange = { rememberMe = it })
-                    Text("Acuérdate de mí", color = Color.Gray)
-                }
-                TextButton(onClick = { /* acción recuperar contraseña */ }) {
-                    Text("¿Has olvidado tu contraseña?", color = Color(0xFF47B8C9))
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Registrarse
-            Row(
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("¿No tienes una cuenta?", color = Color.Gray)
-                Spacer(modifier = Modifier.width(4.dp))
-                TextButton(onClick = onSignUpClick) {
-                    Text("Inscribirse", color = Color(0xFF47B8C9))
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
 
 
-
-        }
-
-        // Botón principal
-        Button(
-            onClick = {
-                // Validación simple de ejemplo
-                if (email.isNotEmpty() && password.isNotEmpty()) {
-                    onLoginSuccess()
-                }
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF47B8C9)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(50)
-        ) {
-            Text("Iniciar sesión", color = Color.White, fontWeight = FontWeight.Bold)
-        }
-    }
-}
-
-@Preview(
-    showSystemUi = true,
-    name = "Login Screen"
-)
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen(
-        onBack = {
-        },
-        onSignUpClick = {
-        },
-        onLoginSuccess = {
-        }
-    )
-}
-
-
-@Composable
-fun HomeScreen(onAccountClick: () -> Unit = {}) {
-    Scaffold(
-        bottomBar = { BottomNavigationBar() }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
-                .background(Color(0xFFF9F9F9))
-                .padding(16.dp)
-        ) {
-            // Encabezado superior
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.logo_nutrilife),
-                    contentDescription = "Logo",
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(40.dp)
-                )
-
-                Text(
-                    text = "NutriLife",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                IconButton(onClick = onAccountClick) {
-                    Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = "Notificaciones",
-                        tint = Color.DarkGray
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Fecha
-            Text(
-                text = "Hoy, 22 de diciembre",
-                fontSize = 16.sp,
-                color = Color.Gray
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Calorías totales
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(4.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("2560", fontSize = 38.sp, fontWeight = FontWeight.Bold)
-                    Text("kcal left", color = Color.Gray)
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Eaten", color = Color.Gray)
-                            Text("0 kcal", fontWeight = FontWeight.Bold)
-                        }
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Burned", color = Color.Gray)
-                            Text("0 kcal", fontWeight = FontWeight.Bold)
-                        }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Macronutrientes
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                NutrientCircle("Carbs", "0 / 224 g", Color(0xFFE57373))
-                NutrientCircle("Protein", "0 / 128 g", Color(0xFFFFB74D))
-                NutrientCircle("Fat", "0 / 138 g", Color(0xFF64B5F6))
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Actividad
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                ActivityCard("🚶‍♂️", "Walking", "0 kcal")
-                ActivityCard("💪", "Activity", "0 kcal")
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            /*
-            // Secciones de comida con imágenes
-            FoodSection("Desayuno", R.drawable.breakfast, 768)
-            FoodSection("Almuerzo", R.drawable.lunch, 768)
-            FoodSection("Cena", R.drawable.dinner, 768)
-            FoodSection("Aperitivos", R.drawable.snack, 256)*/
-
-            Spacer(modifier = Modifier.height(80.dp))
-        }
-    }
-}
-
-@Preview(
-    showSystemUi = true,
-    name = "Home Screen - Full View"
-)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen(
-        onAccountClick = {
-        }
-    )
-}
 
 @Composable
 fun NutrientCircle(title: String, amount: String, color: Color) {

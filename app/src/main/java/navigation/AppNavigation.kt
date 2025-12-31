@@ -8,9 +8,9 @@ import screens.BirthdayScreen
 import screens.CaloriePlanScreen
 import screens.GenderScreen
 import screens.HeightScreen
-import com.example.nutrilive.HomeScreen
+import screens.HomeScreen
 import screens.IdealWeightScreen
-import com.example.nutrilive.LoginScreen
+import screens.LoginScreen
 import screens.NameScreen
 import screens.SignUpScreen
 import com.example.nutrilive.screens.SplashScreen

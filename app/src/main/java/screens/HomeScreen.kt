@@ -27,6 +27,10 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+import android.app.DatePickerDialog
+import androidx.compose.ui.platform.LocalContext
+import java.util.*
+
 /* ---------------------- COLORS ---------------------- */
 
 private val Background = Color(0xFFF4F6F8)
@@ -254,6 +258,33 @@ fun MealItem(
     }
 }
 
+// Calendario
+
+
+
+@Composable
+fun CalendarButton() {
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+
+    IconButton(onClick = {
+        DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                // Aquí recibes la fecha seleccionada
+                val selectedDate = "$dayOfMonth/${month + 1}/$year"
+                println("Fecha seleccionada: $selectedDate")
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }) {
+        Icon(Icons.Default.CalendarToday, contentDescription = "Calendario")
+    }
+}
+
+
 /* ---------------------- BOTTOM NAV ---------------------- */
 
 @Composable
@@ -270,7 +301,7 @@ fun BottomNavigationBar() {
         NavigationBarItem(
             selected = false,
             onClick = {},
-            icon = { Icon(Icons.Default.CalendarToday, null) },
+            icon = { CalendarButton() },
             label = { Text("Calendario") }
         )
 

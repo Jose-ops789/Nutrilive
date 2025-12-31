@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -43,7 +41,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
@@ -59,14 +56,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -104,242 +97,8 @@ fun AppNavigationPreview() {
 
 
 
-@Composable
-fun IdealWeightScreen(
-    onContinue: (Int) -> Unit,
-    onBack: () -> Unit
-) {
-    var idealWeightText by remember { mutableStateOf("") }
-    val idealWeight = idealWeightText.toIntOrNull()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 24.dp, vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column {
-            // Botón volver
-            IconButton(onClick = onBack) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Volver",
-                    tint = Color.Black
-                )
-            }
 
-            // Barra de progreso 6/7
-            LinearProgressIndicator(
-                progress = { 6f / 7f },
-                color = Color(0xFF47B8C9),
-                trackColor = Color.LightGray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(6.dp)
-            )
-            Text(
-                text = "6/7",
-                color = Color.Gray,
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(top = 4.dp)
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Título
-            Text(
-                text = "¿Cuál es tu peso ideal?",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color.Black
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Etiqueta
-            Text("Peso (en kg)", color = Color.Gray)
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Campo numérico
-            OutlinedTextField(
-                value = idealWeightText,
-                onValueChange = { text ->
-                    if (text.all { it.isDigit() }) idealWeightText = text
-                },
-                singleLine = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                shape = RoundedCornerShape(8.dp),
-                placeholder = { Text("Ej: 65") }
-            )
-        }
-
-        // Botón continuar
-        val isValid = (idealWeight != null && idealWeight in 30..300)
-        Button(
-            onClick = { idealWeight?.let { onContinue(it) } },
-            enabled = isValid,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = if (isValid) Color(0xFF47B8C9) else Color.LightGray
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(50)
-        ) {
-            Text("Continuar", color = Color.White)
-        }
-    }
-}
-
-@Preview(
-    showSystemUi = true,
-    name = "Ideal Weight Input Screen"
-)
-@Composable
-fun IdealWeightScreenPreview() {
-    IdealWeightScreen(
-        onContinue = { idealWeightKg ->
-        },
-        onBack = {
-        }
-    )
-}
-
-@Composable
-fun CaloriePlanScreen(
-    onStartPlan: () -> Unit,
-    onBack: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 24.dp, vertical = 32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            // Botón volver
-            IconButton(onClick = onBack, modifier = Modifier.align(Alignment.Start)) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Volver",
-                    tint = Color.Black
-                )
-            }
-
-            // Progreso
-            LinearProgressIndicator(
-                progress = { 1f },
-                color = Color(0xFF47B8C9),
-                trackColor = Color.LightGray,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(6.dp)
-            )
-            Text(
-                text = "7/7",
-                color = Color.Gray,
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(top = 4.dp)
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Título
-            Text(
-                text = "¡Tu plan de calorías personalizado está listo!",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            // Gráfico circular
-            Box(contentAlignment = Alignment.Center) {
-                Canvas(modifier = Modifier.size(200.dp)) {
-                    val strokeWidth = 30.dp.toPx()
-                    size.minDimension / 2
-                    val style = Stroke(width = strokeWidth, cap = StrokeCap.Round)
-
-                    // Porciones
-                    val segments = listOf(
-                        Pair(Color(0xFFE74C3C), 0.35f), // Carbs
-                        Pair(Color(0xFF3498DB), 0.45f), // Fats
-                        Pair(Color(0xFFF39C12), 0.20f)  // Protein
-                    )
-
-                    var startAngle = -90f
-                    for ((color, proportion) in segments) {
-                        val sweepAngle = 360 * proportion
-                        drawArc(
-                            color = color,
-                            startAngle = startAngle,
-                            sweepAngle = sweepAngle,
-                            useCenter = false,
-                            style = style
-                        )
-                        startAngle += sweepAngle
-                    }
-                }
-
-                // Texto central
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text("2560", fontSize = 36.sp, fontWeight = FontWeight.Bold, color = Color.Black)
-                    Text("kcal", color = Color.Gray)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Leyenda
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                LegendItem(Color(0xFFE74C3C), "Carbs")
-                LegendItem(Color(0xFF3498DB), "Fats")
-                LegendItem(Color(0xFFF39C12), "Protein")
-            }
-        }
-
-        // Botón inferior
-        Button(
-            onClick = onStartPlan,
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF47B8C9)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            shape = RoundedCornerShape(50)
-        ) {
-            Text("Comienza tu plan ahora", color = Color.White)
-        }
-    }
-}
-
-@Preview(
-    showSystemUi = true,
-    name = "Calorie Plan Summary Screen"
-)
-@Composable
-fun CaloriePlanScreenPreview() {
-    CaloriePlanScreen(
-        onStartPlan = {
-        },
-        onBack = {
-        }
-    )
-}
 
 @Composable
 fun LegendItem(color: Color, label: String) {

@@ -4,37 +4,16 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Article
-import androidx.compose.material.icons.filled.AddCircleOutline
-import androidx.compose.material.icons.filled.CalendarToday
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,285 +23,270 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.nutrilive.R
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+/* ---------------------- COLORS ---------------------- */
+
+private val Background = Color(0xFFF4F6F8)
+private val Primary = Color(0xFF3A7BD5)
+private val PrimarySoft = Color(0xFFE8F0FB)
+private val TextMain = Color(0xFF1C1C1E)
+private val TextSecondary = Color(0xFF6E6E73)
+
+/* ---------------------- HOME ---------------------- */
 
 @Composable
 fun HomeScreen(
     onAccountClick: () -> Unit = {},
-    onMealClick: (String) -> Unit = {} // <-- por ahora solo avisa "desayuno", "almuerzo", etc.
+    onMealClick: (String) -> Unit = {}
 ) {
     Scaffold(
+        containerColor = Background,
         bottomBar = { BottomNavigationBar() }
-    ) { innerPadding ->
+    ) { padding ->
+
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+                .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .background(Color(0xFFF9F9F9))
                 .padding(16.dp)
         ) {
-            // Encabezado superior
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.logo_nutrilife),
-                    contentDescription = "Logo",
-                    tint = Color.Unspecified,
-                    modifier = Modifier.size(40.dp)
-                )
 
-                Text(
-                    text = "NutriLife",
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                IconButton(onClick = onAccountClick) {
-                    Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = "Notificaciones",
-                        tint = Color.DarkGray
-                    )
-                }
-            }
+            Header(onAccountClick)
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Fecha
-            Text(
-                text = "Hoy, 22 de diciembre",
-                fontSize = 16.sp,
-                color = Color.Gray
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Calorías totales (mock)
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(4.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text("2560", fontSize = 38.sp, fontWeight = FontWeight.Bold)
-                    Text("kcal left", color = Color.Gray)
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Eaten", color = Color.Gray)
-                            Text(
-                                "${CaloriesState.eatenCalories.intValue} kcal",
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Burned", color = Color.Gray)
-                            Text(
-                                "${CaloriesState.eatenCalories.intValue} kcal",
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Macronutrientes (mock)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                NutrientCircle("Carbs", "0 / 224 g", Color(0xFFE57373))
-                NutrientCircle("Protein", "0 / 128 g", Color(0xFFFFB74D))
-                NutrientCircle("Fat", "0 / 138 g", Color(0xFF64B5F6))
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Actividad (mock)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                ActivityCard("🚶‍♂️", "Walking", "0 kcal")
-                ActivityCard("💪", "Activity", "0 kcal")
-            }
+            CaloriesCard()
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // ✅ Secciones de comida (como tu diseño)
-            FoodSection(
-                title = "Desayuno",
-                imageRes = R.drawable.breakfast,
-                kcal = 768,
-                onClick = { onMealClick("desayuno") }
-            )
-            FoodSection(
-                title = "Almuerzo",
-                imageRes = R.drawable.lunch,
-                kcal = 768,
-                onClick = { onMealClick("almuerzo") }
-            )
-            FoodSection(
-                title = "Cena",
-                imageRes = R.drawable.dinner,
-                kcal = 768,
-                onClick = { onMealClick("cena") }
-            )
-            FoodSection(
-                title = "Aperitivos",
-                imageRes = R.drawable.snack,
-                kcal = 256,
-                onClick = { onMealClick("aperitivos") }
-            )
+            MealsSection(onMealClick)
 
             Spacer(modifier = Modifier.height(80.dp))
         }
     }
 }
 
+/* ---------------------- HEADER ---------------------- */
+
 @Composable
-fun NutrientCircle(title: String, amount: String, color: Color) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(
-            modifier = Modifier
-                .size(70.dp)
-                .background(Color.White, CircleShape)
-                .padding(6.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .background(Color.Transparent, CircleShape)
-                    .padding(6.dp)
-            )
-            // círculo simple (mock)
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .background(Color.Transparent, CircleShape)
+private fun Header(onAccountClick: () -> Unit) {
+    val dateText = remember {
+        val formatter = SimpleDateFormat("EEEE, dd MMMM", Locale.getDefault())
+        formatter.format(Date())
+    }
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text("Hoy", color = TextSecondary, fontSize = 14.sp)
+            Text(
+                dateText,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = TextMain
             )
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(title, color = Color.Gray, fontWeight = FontWeight.Medium)
-        Text(amount, fontSize = 12.sp, color = Color.LightGray)
+        IconButton(onClick = onAccountClick) {
+            Icon(
+                Icons.Default.Notifications,
+                contentDescription = null,
+                tint = TextSecondary
+            )
+        }
     }
 }
 
+/* ---------------------- CALORIES ---------------------- */
+
 @Composable
-fun ActivityCard(icon: String, label: String, kcal: String) {
+private fun CaloriesCard() {
+
+    val animatedCalories = androidx.compose.animation.core.animateIntAsState(
+        targetValue = CaloriesState.leftCalories.intValue,
+        label = "calories-animation"
+    )
+
+    val progress = CaloriesState.eatenCalories.intValue.toFloat() /
+            CaloriesState.totalCalories.intValue.toFloat()
+
+    Card(
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = PrimarySoft),
+        elevation = CardDefaults.cardElevation(2.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            Text(
+                "Calorías restantes",
+                color = TextSecondary,
+                fontSize = 14.sp
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.size(160.dp)
+            ) {
+
+                CircularProgressIndicator(
+                progress = { progress.coerceIn(0f, 1f) },
+                modifier = Modifier.fillMaxSize(),
+                color = Primary,
+                strokeWidth = 10.dp,
+                trackColor = Color.White,
+                strokeCap = ProgressIndicatorDefaults.CircularDeterminateStrokeCap,
+                )
+
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        "${animatedCalories.value}",
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Primary
+                    )
+                    Text("kcal", color = TextSecondary)
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Stat("Consumidas", CaloriesState.eatenCalories.intValue)
+                Stat("Restantes", CaloriesState.leftCalories.intValue)
+            }
+        }
+    }
+}
+
+
+
+@Composable
+private fun Stat(label: String, value: Int) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(icon, fontSize = 26.sp)
-        Text(label, color = Color.Gray)
-        Text(kcal, fontWeight = FontWeight.Bold)
+        Text(label, color = TextSecondary, fontSize = 13.sp)
+        Text(
+            "$value kcal",
+            fontWeight = FontWeight.SemiBold,
+            color = TextMain
+        )
     }
 }
 
-/**
- * ✅ ESTA ES LA FUNCIÓN QUE TE DABA ERROR
- * Ahora tiene el parámetro onClick, así ya no sale:
- * "No value passed for parameter 'onClick'"
- */
+/* ---------------------- MEALS ---------------------- */
+
 @Composable
-fun FoodSection(
+private fun MealsSection(onMealClick: (String) -> Unit) {
+    Text(
+        "Comidas",
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold,
+        color = TextMain
+    )
+
+    Spacer(modifier = Modifier.height(12.dp))
+
+    MealItem("Desayuno", R.drawable.breakfast) { onMealClick("desayuno") }
+    MealItem("Almuerzo", R.drawable.lunch) { onMealClick("almuerzo") }
+    MealItem("Cena", R.drawable.dinner) { onMealClick("cena") }
+    MealItem("Aperitivos", R.drawable.snack) { onMealClick("aperitivos") }
+}
+
+/* ---------------------- MEAL ITEM ---------------------- */
+
+@Composable
+fun MealItem(
     title: String,
-    @DrawableRes imageRes: Int,
-    kcal: Int,
+    @DrawableRes image: Int,
     onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 6.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(2.dp)
+        shape = RoundedCornerShape(18.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = imageRes),
-                    contentDescription = title,
-                    modifier = Modifier.size(50.dp)
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Column {
-                    Text(title, fontWeight = FontWeight.Bold)
-                    Text("0 / $kcal kcal", color = Color.Gray)
-                }
-            }
+
+            Image(
+                painter = painterResource(id = image),
+                contentDescription = null,
+                modifier = Modifier.size(44.dp)
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Text(
+                title,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                color = TextMain,
+                modifier = Modifier.weight(1f)
+            )
+
             Icon(
-                imageVector = Icons.Default.AddCircleOutline,
-                contentDescription = "Agregar",
-                tint = Color.Gray
+                Icons.Default.AddCircleOutline,
+                contentDescription = null,
+                tint = Primary,
+                modifier = Modifier.size(26.dp)
             )
         }
     }
 }
 
+/* ---------------------- BOTTOM NAV ---------------------- */
+
 @Composable
 fun BottomNavigationBar() {
-    NavigationBar(containerColor = Color.White) {
+    NavigationBar(containerColor = Color.White, tonalElevation = 4.dp) {
+
         NavigationBarItem(
-            icon = { Icon(Icons.Default.Home, contentDescription = "Inicio") },
-            label = { Text("Inicio") },
             selected = true,
-            onClick = {}
+            onClick = {},
+            icon = { Icon(Icons.Default.Home, null) },
+            label = { Text("Inicio") }
         )
+
         NavigationBarItem(
-            icon = { Icon(Icons.Default.CalendarToday, contentDescription = "Plan") },
-            label = { Text("Plan") },
             selected = false,
-            onClick = {}
+            onClick = {},
+            icon = { Icon(Icons.Default.CalendarToday, null) },
+            label = { Text("Calendario") }
         )
+
         NavigationBarItem(
-            icon = { Icon(Icons.AutoMirrored.Filled.Article, contentDescription = "Artículos") },
-            label = { Text("Artículos") },
             selected = false,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Person, contentDescription = "Cuenta") },
-            label = { Text("Cuenta") },
-            selected = false,
-            onClick = {}
+            onClick = {},
+            icon = { Icon(Icons.Default.Person, null) },
+            label = { Text("Cuenta") }
         )
     }
 }
 
-@Preview(showSystemUi = true, name = "Home Screen - Full View")
+/* ---------------------- PREVIEW ---------------------- */
+
+@Preview(showSystemUi = true)
 @Composable
-fun HomeScreenPreview() {
-    HomeScreen(
-        onAccountClick = {},
-        onMealClick = { mealType ->
-            // solo para probar en preview
-            println("Meal click: $mealType")
-        }
-    )
+fun HomePreview() {
+    HomeScreen()
 }

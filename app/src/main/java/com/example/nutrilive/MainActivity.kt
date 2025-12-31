@@ -1,7 +1,6 @@
 package com.example.nutrilive
 
 import android.os.Bundle
-import android.window.SplashScreen
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
@@ -79,8 +78,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.Wallpapers
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -120,7 +117,7 @@ fun AppNavigation(navController: NavHostController) {
             })
         }
 
-        composable("Bienvenido") {
+        composable("welcome") {
             WelcomeScreen(onSignUpClick = { navController.navigate("signup") },
             onLoginClick = { navController.navigate("login") }
             )
@@ -1732,7 +1729,7 @@ fun BottomNavigationBarPreview() {
 
 
 
-@androidx.compose.ui.tooling.preview.Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewSignUpScreen() {
     val fakeNavController = rememberNavController() // se usa solo para preview

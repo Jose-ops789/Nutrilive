@@ -40,6 +40,7 @@ fun NameScreen(onContinue: (String) -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             // Barra de progreso
             LinearProgressIndicator(
@@ -52,6 +53,7 @@ fun NameScreen(onContinue: (String) -> Unit) {
                     .padding(bottom = 8.dp)
             )
 
+            
             // Texto de paso
             Text(
                 text = "1/7",

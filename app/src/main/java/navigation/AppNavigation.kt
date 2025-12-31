@@ -134,7 +134,8 @@ fun AppNavigation(navController: NavHostController) {
 
             MealSelectionScreen(
                 mealType = mealType,
-                navController = navController
+                navController = navController,
+                onBack = { navController.popBackStack() }
             )
         }
         composable("meal_summary/{mealType}") { backStackEntry ->

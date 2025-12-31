@@ -43,6 +43,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 
 
 data class FoodItem(
@@ -54,8 +55,10 @@ data class FoodItem(
 // Función principal
 @Composable
 fun MealSelectionScreen(
+
     mealType: String,
     navController: NavController? ,
+    onBack: () -> Unit
 
 ) {
     var searchQuery by remember { mutableStateOf("") }
@@ -68,6 +71,7 @@ fun MealSelectionScreen(
         .filter { it.name.contains(searchQuery, ignoreCase = true) }
 
     Column(
+
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
@@ -321,7 +325,8 @@ fun sampleFoods(mealType: String): List<FoodItem> {
 fun MealSelectionPreview() {
     MealSelectionScreen(
         mealType = "desayuno",
-        navController = null
+        navController = null,
+        onBack = {}
     )
 }
 

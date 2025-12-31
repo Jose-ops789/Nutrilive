@@ -1,9 +1,11 @@
 package navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import screens.BirthdayScreen
 import screens.CaloriePlanScreen
 import screens.GenderScreen
@@ -119,4 +121,10 @@ fun AppNavigation(navController: NavHostController) {
 
 
     }
+}
+@Preview(showSystemUi = true, name = "App Navigation")
+@Composable
+fun AppNavigationPreview() {
+    val navController = rememberNavController()
+    AppNavigation(navController = navController)
 }

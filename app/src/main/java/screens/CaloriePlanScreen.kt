@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -32,7 +34,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.nutrilive.LegendItem
 
 @Composable
 fun CaloriePlanScreen(
@@ -162,3 +163,25 @@ fun CaloriePlanScreenPreview() {
         }
     )
 }
+@Composable
+fun LegendItem(color: Color, label: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            modifier = Modifier
+                .size(12.dp)
+                .background(color = color, shape = CircleShape)
+        )
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(label, color = Color.Black)
+    }
+}
+
+@Preview(name = "Legend Item - Carbs", showBackground = true)
+@Composable
+fun LegendItemCarbsPreview() {
+    LegendItem(
+        color = Color(0xFFE74C3C), // Color para Carbs
+        label = "Carbs"
+    )
+}
+

@@ -1,4 +1,4 @@
-package com.example.nutrilive.ui.theme
+package screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,16 +32,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-
 
 
 data class FoodItem(
@@ -54,14 +55,14 @@ data class FoodItem(
 @Composable
 fun MealSelectionScreen(
     mealType: String,
-    navController: NavController? = null,
-    onAddFood: (FoodItem) -> Unit = {}
+    navController: NavController? ,
+
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedTab by remember { mutableStateOf("Reciente") }
 
     // 🟢 Lista de seleccionados
-    var selectedFoods by remember { mutableStateOf(listOf<FoodItem>()) }
+    var selectedFoods by rememberSaveable { mutableStateOf(listOf<FoodItem>()) }
 
     val foods = sampleFoods(mealType)
         .filter { it.name.contains(searchQuery, ignoreCase = true) }
@@ -160,10 +161,13 @@ fun MealSelectionScreen(
 
                 Button(
                     onClick = {
-                        // Más adelante conectaremos esto a la pantalla de detalle de comida
+                        navController?.currentBackStackEntry
+                            ?.savedStateHandle
+                            ?.set("foods", selectedFoods)
+
+                        navController?.navigate("meal_summary/$mealType")
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5CD6C0)),
-                    shape = RoundedCornerShape(20.dp)
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF5CD6C0))
                 ) {
                     Text("Ver (${selectedFoods.size})", color = Color.White)
                 }
@@ -312,3 +316,12 @@ fun sampleFoods(mealType: String): List<FoodItem> {
         else -> emptyList()
     }
 }
+@Composable
+@Preview(showSystemUi = true)
+fun MealSelectionPreview() {
+    MealSelectionScreen(
+        mealType = "desayuno",
+        navController = null
+    )
+}
+

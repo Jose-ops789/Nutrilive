@@ -1,5 +1,7 @@
 package navigation
 
+import screens.MealSelectionScreen
+
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -18,7 +20,8 @@ import screens.SignUpScreen
 import com.example.nutrilive.screens.SplashScreen
 import screens.WeightScreen
 import com.example.nutrilive.screens.WelcomeScreen
-
+import screens.FoodItem
+import screens.MealSummaryScreen
 
 
 @Composable
@@ -115,8 +118,45 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         composable("home") {
-            HomeScreen(onAccountClick = { /* abrir perfil o notificaciones */ })
+            HomeScreen(
+                onAccountClick = { /* perfil / notificaciones */ },
+                onMealClick = { mealType ->
+                    // 🔥 AQUÍ CONECTAMOS
+                    navController.navigate("meal/$mealType")
+                }
+            )
         }
+
+        // MEAL SELECTION
+        composable("meal/{mealType}") { backStackEntry ->
+            val mealType =
+                backStackEntry.arguments?.getString("mealType") ?: "desayuno"
+
+            MealSelectionScreen(
+                mealType = mealType,
+                navController = navController
+            )
+        }
+        composable("meal_summary/{mealType}") { backStackEntry ->
+            val mealType =
+                backStackEntry.arguments?.getString("mealType") ?: "desayuno"
+
+            val foods =
+                navController.previousBackStackEntry
+                    ?.savedStateHandle
+                    ?.get<List<FoodItem>>("foods")
+                    ?: emptyList()
+
+            MealSummaryScreen(
+                mealType = mealType,
+                foods = foods,
+                navController = navController
+            )
+        }
+
+
+
+
 
 
 

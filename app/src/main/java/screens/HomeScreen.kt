@@ -3,7 +3,7 @@ package screens
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,7 +46,10 @@ import androidx.compose.ui.unit.sp
 import com.example.nutrilive.R
 
 @Composable
-fun HomeScreen(onAccountClick: () -> Unit = {}) {
+fun HomeScreen(
+    onAccountClick: () -> Unit = {},
+    onMealClick: (String) -> Unit = {} // <-- por ahora solo avisa "desayuno", "almuerzo", etc.
+) {
     Scaffold(
         bottomBar = { BottomNavigationBar() }
     ) { innerPadding ->
@@ -97,7 +100,7 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Calorías totales
+            // Calorías totales (mock)
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -121,11 +124,17 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("Eaten", color = Color.Gray)
-                            Text("0 kcal", fontWeight = FontWeight.Bold)
+                            Text(
+                                "${CaloriesState.eatenCalories.intValue} kcal",
+                                fontWeight = FontWeight.Bold
+                            )
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text("Burned", color = Color.Gray)
-                            Text("0 kcal", fontWeight = FontWeight.Bold)
+                            Text(
+                                "${CaloriesState.eatenCalories.intValue} kcal",
+                                fontWeight = FontWeight.Bold
+                            )
                         }
                     }
                 }
@@ -133,7 +142,7 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Macronutrientes
+            // Macronutrientes (mock)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -145,7 +154,7 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Actividad
+            // Actividad (mock)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -158,67 +167,65 @@ fun HomeScreen(onAccountClick: () -> Unit = {}) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            /*
-            // Secciones de comida con imágenes
-            FoodSection("Desayuno", R.drawable.breakfast, 768)
-            FoodSection("Almuerzo", R.drawable.lunch, 768)
-            FoodSection("Cena", R.drawable.dinner, 768)
-            FoodSection("Aperitivos", R.drawable.snack, 256)*/
+            // ✅ Secciones de comida (como tu diseño)
+            FoodSection(
+                title = "Desayuno",
+                imageRes = R.drawable.breakfast,
+                kcal = 768,
+                onClick = { onMealClick("desayuno") }
+            )
+            FoodSection(
+                title = "Almuerzo",
+                imageRes = R.drawable.lunch,
+                kcal = 768,
+                onClick = { onMealClick("almuerzo") }
+            )
+            FoodSection(
+                title = "Cena",
+                imageRes = R.drawable.dinner,
+                kcal = 768,
+                onClick = { onMealClick("cena") }
+            )
+            FoodSection(
+                title = "Aperitivos",
+                imageRes = R.drawable.snack,
+                kcal = 256,
+                onClick = { onMealClick("aperitivos") }
+            )
 
             Spacer(modifier = Modifier.height(80.dp))
         }
     }
 }
 
-@Preview(
-    showSystemUi = true,
-    name = "Home Screen - Full View"
-)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen(
-        onAccountClick = {
-        }
-    )
-}
 @Composable
 fun NutrientCircle(title: String, amount: String, color: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Box(
             modifier = Modifier
                 .size(70.dp)
-                .border(4.dp, color, CircleShape)
-                .padding(8.dp),
+                .background(Color.White, CircleShape)
+                .padding(6.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("0", fontWeight = FontWeight.Bold)
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .background(Color.Transparent, CircleShape)
+                    .padding(6.dp)
+            )
+            // círculo simple (mock)
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .background(Color.Transparent, CircleShape)
+            )
         }
+
         Spacer(modifier = Modifier.height(4.dp))
         Text(title, color = Color.Gray, fontWeight = FontWeight.Medium)
         Text(amount, fontSize = 12.sp, color = Color.LightGray)
     }
-}
-
-@Preview(name = "Nutrient Circle - Carbs", showBackground = true)
-@Composable
-fun NutrientCircleCarbsPreview() {
-    // Previsualización para Carbs
-    NutrientCircle(
-        title = "Carbs",
-        amount = "0 / 224 g",
-        color = Color(0xFFE57373) // Color de ejemplo
-    )
-}
-
-@Preview(name = "Nutrient Circle - Protein", showBackground = true)
-@Composable
-fun NutrientCircleProteinPreview() {
-    // Previsualización para Protein
-    NutrientCircle(
-        title = "Protein",
-        amount = "0 / 128 g",
-        color = Color(0xFFFFB74D) // Color de ejemplo
-    )
 }
 
 @Composable
@@ -230,34 +237,23 @@ fun ActivityCard(icon: String, label: String, kcal: String) {
     }
 }
 
-@Preview(name = "Activity Card - Walking", showBackground = true)
+/**
+ * ✅ ESTA ES LA FUNCIÓN QUE TE DABA ERROR
+ * Ahora tiene el parámetro onClick, así ya no sale:
+ * "No value passed for parameter 'onClick'"
+ */
 @Composable
-fun ActivityCardWalkingPreview() {
-    // Ejemplo de previsualización para la actividad "Walking"
-    ActivityCard(
-        icon = "🚶‍♂️", // Un emoji de ejemplo
-        label = "Walking",
-        kcal = "0 kcal"
-    )
-}
-
-@Preview(name = "Activity Card - Activity", showBackground = true)
-@Composable
-fun ActivityCardActivityPreview() {
-    // Ejemplo de previsualización para la actividad genérica
-    ActivityCard(
-        icon = "💪", // Otro emoji de ejemplo
-        label = "Activity",
-        kcal = "0 kcal"
-    )
-}
-
-@Composable
-fun FoodSection(title: String, @DrawableRes imageRes: Int, kcal: Int) {
+fun FoodSection(
+    title: String,
+    @DrawableRes imageRes: Int,
+    kcal: Int,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {
@@ -287,26 +283,6 @@ fun FoodSection(title: String, @DrawableRes imageRes: Int, kcal: Int) {
             )
         }
     }
-}
-
-@Preview(name = "Food Section - Breakfast", showBackground = true)
-@Composable
-fun FoodSectionBreakfastPreview() {
-    FoodSection(
-        title = "Desayuno",
-        imageRes = android.R.drawable.ic_dialog_info,
-        kcal = 768
-    )
-}
-
-@Preview(name = "Food Section - Snack", showBackground = true)
-@Composable
-fun FoodSectionSnackPreview() {
-    FoodSection(
-        title = "Aperitivos",
-        imageRes = android.R.drawable.ic_input_add,
-        kcal = 256
-    )
 }
 
 @Composable
@@ -339,8 +315,14 @@ fun BottomNavigationBar() {
     }
 }
 
-@Preview(name = "Bottom Navigation Bar", showBackground = true)
+@Preview(showSystemUi = true, name = "Home Screen - Full View")
 @Composable
-fun BottomNavigationBarPreview() {
-    BottomNavigationBar()
+fun HomeScreenPreview() {
+    HomeScreen(
+        onAccountClick = {},
+        onMealClick = { mealType ->
+            // solo para probar en preview
+            println("Meal click: $mealType")
+        }
+    )
 }

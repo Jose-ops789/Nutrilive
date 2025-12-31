@@ -7,14 +7,14 @@ import androidx.navigation.compose.composable
 import screens.BirthdayScreen
 import com.example.nutrilive.CaloriePlanScreen
 import screens.GenderScreen
-import com.example.nutrilive.HeightScreen
+import screens.HeightScreen
 import com.example.nutrilive.HomeScreen
 import com.example.nutrilive.IdealWeightScreen
 import com.example.nutrilive.LoginScreen
 import screens.NameScreen
 import screens.SignUpScreen
 import com.example.nutrilive.screens.SplashScreen
-import com.example.nutrilive.WeightScreen
+import screens.WeightScreen
 import com.example.nutrilive.screens.WelcomeScreen
 
 

@@ -49,31 +49,12 @@ private val TextSecondary = Color(0xFF6E6E73)
 @Composable
 fun HomeScreen(
     onAccountClick: () -> Unit = {},
-    onMealClick: (String) -> Unit = {},
-            onLogout: () -> Unit
+    onMealClick: (String) -> Unit = {}
 ) {
-    var showLogoutDialog by remember { mutableStateOf(false) }
-
     Scaffold(
         containerColor = Background,
-        bottomBar = {
-            BottomNavigationBar(
-                onAccountClick = { showLogoutDialog = true }
-            )
-        }
+        bottomBar = { BottomNavigationBar() }
     ) { padding ->
-        LogoutDialog(
-            show = showLogoutDialog,
-            onConfirm = {
-                showLogoutDialog = false
-                // 👉 AQUÍ luego pondrás tu lógica real de cerrar sesión
-                onLogout() // por ejemplo: auth.signOut()
-            },
-            onDismiss = {
-                showLogoutDialog = false
-            }
-        )
-
 
         Column(
             modifier = Modifier
@@ -321,7 +302,7 @@ fun CalendarButton() {
 /* ---------------------- BOTTOM NAV ---------------------- */
 
 @Composable
-fun BottomNavigationBar( onAccountClick: () -> Unit) {
+fun BottomNavigationBar() {
     NavigationBar(containerColor = Color.White, tonalElevation = 4.dp) {
 
         NavigationBarItem(
@@ -340,12 +321,10 @@ fun BottomNavigationBar( onAccountClick: () -> Unit) {
 
         NavigationBarItem(
             selected = false,
-            onClick = onAccountClick,
+            onClick = {},
             icon = { Icon(Icons.Default.Person, null) },
             label = { Text("Cuenta") }
         )
-
-
     }
 }
 
@@ -354,11 +333,7 @@ fun BottomNavigationBar( onAccountClick: () -> Unit) {
 @Preview(showSystemUi = true)
 @Composable
 fun HomePreview() {
-    HomeScreen(
-        onAccountClick = {},
-        onMealClick = {},
-        onLogout = {}
-    )
+    HomeScreen()
 }
 
 
@@ -510,38 +485,3 @@ private fun StatCard(
 /* ---------------------- SNACKBAR FEEDBACK ---------------------- */
 
 
-@Composable
-fun LogoutDialog(
-    show: Boolean,
-    onConfirm: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    if (show) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            title = {
-                Text(
-                    text = "Cerrar sesión",
-                    fontWeight = FontWeight.Bold
-                )
-            },
-            text = {
-                Text("¿Estás seguro de que deseas cerrar sesión?")
-            },
-            confirmButton = {
-                TextButton(onClick = onConfirm) {
-                    Text(
-                        "Cerrar sesión",
-                        color = Color.Red,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = onDismiss) {
-                    Text("Cancelar")
-                }
-            }
-        )
-    }
-}

@@ -23,10 +23,6 @@ import com.example.nutrilive.screens.WelcomeScreen
 import screens.FoodItem
 import screens.MealSummaryScreen
 
-object Routes {
-    const val WELCOME = "welcome"
-    const val HOME = "home"
-}
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -123,21 +119,13 @@ fun AppNavigation(navController: NavHostController) {
         }
         composable("home") {
             HomeScreen(
-                onAccountClick = {
-                    // este solo abre el diálogo, NO navega
-                },
+                onAccountClick = { /* perfil / notificaciones */ },
                 onMealClick = { mealType ->
+                    // 🔥 AQUÍ CONECTAMOS
                     navController.navigate("meal/$mealType")
-                },
-                onLogout = {
-                    navController.navigate("welcome") {
-                        popUpTo("home") { inclusive = true }
-                        launchSingleTop = true
-                    }
                 }
             )
         }
-
 
         // MEAL SELECTION
         composable("meal/{mealType}") { backStackEntry ->
@@ -166,24 +154,6 @@ fun AppNavigation(navController: NavHostController) {
                 navController = navController
             )
         }
-        composable("welcome") {
-            WelcomeScreen(
-                onSignUpClick = { navController.navigate("signup") },
-                onLoginClick = { navController.navigate("login") }
-            )
-        }
-        composable("home") {
-            HomeScreen(
-                onLogout = {
-                    navController.navigate(Routes.WELCOME) {
-                        popUpTo(Routes.HOME) { inclusive = true }
-                        launchSingleTop = true
-                    }
-                }
-            )
-        }
-
-
 
 
 
